@@ -12,6 +12,7 @@ import Foundation
 enum Event: String {
 	case applicationStarted
 	case mainDirectoryDidSelect
+	case filesToOpenDidSelect
 	case runDidFinish
 	
 	func dispatch(_ info: [String:AnyObject]? = nil) {

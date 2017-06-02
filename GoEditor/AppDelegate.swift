@@ -108,15 +108,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		panel.canCreateDirectories = true
 		panel.showsHiddenFiles = false
 		panel.isExtensionHidden = false
-		if var path = Shared.mainPackageDirectory {
-			if let index = path.lastOccurenceOf(char: "/") {
-				path = path.substring(to: index)
-			}
-			panel.directoryURL = URL(fileURLWithPath: path)
+		if let path = Shared.mainPackageDirectory {
+			panel.directoryURL = URL(fileURLWithPath: path.withoutLastPathComponent())
 		}
 		
-		panel.begin { status in
-			if status == NSFileHandlingPanelOKButton {
+		panel.begin { retv in
+			if retv == NSFileHandlingPanelOKButton {
 				if let path = panel.urls.first?.path {
 					Shared.mainPackageDirectory = path
 					Event.mainDirectoryDidSelect.dispatch()
@@ -135,20 +132,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		panel.canCreateDirectories = true
 		panel.showsHiddenFiles = false
 		panel.isExtensionHidden = false
-		
-		if var path = Shared.mainPackageDirectory {
-			if let index = path.lastOccurenceOf(char: "/") {
-				path = path.substring(to: index)
-			}
+		if let path = Shared.lastOpenedFileDirectory {
 			panel.directoryURL = URL(fileURLWithPath: path)
 		}
-		if panel.runModal() == NSFileHandlingPanelOKButton {
-			if let path = panel.urls.first?.path {
-				Shared.mainPackageDirectory = path
-				Event.mainDirectoryDidSelect.dispatch()
+		
+		panel.begin { retv in
+			if retv == NSFileHandlingPanelOKButton {
+				let urls = panel.urls
+				if urls.isNotEmpty {
+					let files = urls.map { $0.path }
+					Shared.lastOpenedFileDirectory = files[0].withoutLastPathComponent().withoutLastPathComponent()
+					Event.filesToOpenDidSelect.dispatch(["files":files as AnyObject])
+				}
 			}
 		}
-		
 	}
 	
 	private func run() {
