@@ -21,10 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var window: NSWindow!
 	@IBOutlet weak var openSegmentedControl: NSSegmentedControl!
 	@IBOutlet weak var actionSegmentedControl: NSSegmentedControl!
-	@IBOutlet weak var mainPackageDirectory: NSTextField!
-	
 	private var viewController: NSViewController!
-//	private var mainSplitView: MainSplitView?
 	
 
 	func applicationWillFinishLaunching(_ notification: Notification) {

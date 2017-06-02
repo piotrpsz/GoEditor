@@ -95,7 +95,7 @@ class EditorSplitView: NSSplitView, EventObserver {
 			let (editorScrollViewRect, consoleScrollViewRect) = self.rects()
 			self.editorScrollView.frame = editorScrollViewRect
 			self.consoleScrollView.frame = consoleScrollViewRect
-			self.editors[self.currentEditorIndex].openFile(fpath: "/Users/piotr/Projects/Go/src/Intive/intivebook.go")
+//			self.editors[self.currentEditorIndex].openFile(fpath: "/Users/piotr/Projects/Go/src/Intive/intivebook.go")
 		}
 	}
 	
