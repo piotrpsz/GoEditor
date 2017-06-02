@@ -23,4 +23,19 @@ extension String {
 		let range = start..<end
 		return self.range(of: String(char), options: String.CompareOptions.backwards, range: range)?.lowerBound
 	}
+	
+	func withoutLastPathComponent() -> String {
+		if let index = lastOccurenceOf(char: "/") {
+			return substring(to: index)
+		}
+		return self
+	}
+	
+}
+
+extension Array {
+	
+	var isNotEmpty: Bool {
+		return !self.isEmpty
+	}
 }

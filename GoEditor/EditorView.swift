@@ -87,7 +87,7 @@ final class EditorView: NSTextView {
 		guard let string = try? String(contentsOfFile: fpath) else {
 			return
 		}
-		textStorage?.append(NSAttributedString(string: string))
+		textStorage!.replaceCharacters(in: NSRange(location: 0, length: textStorage!.characters.count), with: NSAttributedString(string: string))
 		updateGeometry()
 		textColor = currentFontColor
 		font = NSFont.systemFont(ofSize: 12.0)
