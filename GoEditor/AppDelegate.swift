@@ -17,13 +17,17 @@ enum ActionIndex: Int {
 }
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
     @IBOutlet weak var window: NSWindow!
 	@IBOutlet weak var openSegmentedControl: NSSegmentedControl!
 	@IBOutlet weak var actionSegmentedControl: NSSegmentedControl!
 	private var viewController: NSViewController!
-	
+	var observers: [NSObjectProtocol] = []
 
+    deinit {
+        removeObservers()
+    }
+    
 	func applicationWillFinishLaunching(_ notification: Notification) {
 		let mainSplitView = MainSplitView(frame: window.contentView!.frame)
 		viewController = WindowViewController()
@@ -41,9 +45,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //		data.forEach {
 //			Swift.print("\($0)")
 //		}
-		
+		registerObservers()
     }
 
+    func registerObservers() {
+        registerEvent(Event.mainDirectoryDidChange) { note in
+            let isKnown = Shared.mainPackageDirectory != nil
+            self.actionSegmentedControl.setEnabled(isKnown, forSegment: 0)
+            self.actionSegmentedControl.setEnabled(isKnown, forSegment: 1)
+        }
+    }
+    
 	func applicationDidBecomeActive(_ notification: Notification) {
 	}
 	
@@ -119,7 +131,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			if retv == NSFileHandlingPanelOKButton {
 				if let path = panel.urls.first?.path {
 					Shared.mainPackageDirectory = path
-					Event.mainDirectoryDidSelect.dispatch()
 				}
 			}
 		}

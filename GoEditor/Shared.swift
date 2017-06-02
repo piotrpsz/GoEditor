@@ -9,6 +9,10 @@
 import Foundation
 
 final class Shared {
-	static var mainPackageDirectory: String?
+    static var mainPackageDirectory: String? {
+        didSet {
+            Event.mainDirectoryDidChange.dispatch()
+        }
+    }
 	static var lastOpenedFileDirectory: String?
 }
