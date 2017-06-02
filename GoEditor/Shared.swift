@@ -10,4 +10,5 @@ import Foundation
 
 final class Shared {
 	static var mainPackageDirectory: String?
+	static var lastOpenedFileDirectory: String?
 }
