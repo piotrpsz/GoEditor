@@ -5,6 +5,8 @@
 //  Created by Piotr Pszczolkowski on 29/05/2017.
 //  Copyright © 2017 Piotr Pszczolkowski. All rights reserved.
 //
+//  This code is from Matthias Hochgatterer code example
+//
 
 import Cocoa
 
