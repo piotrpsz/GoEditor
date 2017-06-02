@@ -111,6 +111,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		if let path = Shared.mainPackageDirectory {
 			panel.directoryURL = URL(fileURLWithPath: path.withoutLastPathComponent())
 		}
+		else {
+			panel.directoryURL = URL(fileURLWithPath: NSHomeDirectory())
+		}
 		
 		panel.begin { retv in
 			if retv == NSFileHandlingPanelOKButton {
@@ -134,6 +137,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		panel.isExtensionHidden = false
 		if let path = Shared.lastOpenedFileDirectory {
 			panel.directoryURL = URL(fileURLWithPath: path)
+		}
+		else {
+			panel.directoryURL = URL(fileURLWithPath: NSHomeDirectory())
 		}
 		
 		panel.begin { retv in
@@ -174,6 +180,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	private func kill() {
 		
+	}
+	
+	//****************************************************************
+	//*                                                              *
+	//*                  M E N U   A C T I O N S                     *
+	//*                                                              *
+	//****************************************************************
+	
+	@IBAction func saveDidSelect(_ sender: AnyObject) {
+		Event.saveRequest.dispatch()
 	}
 }
 

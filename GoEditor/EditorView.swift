@@ -8,19 +8,6 @@
 
 import Cocoa
 
-enum KeyWords: String {
-	case Break = "break"
-	case Default = "default"
-	case Func = "func"
-	case Interface = "interface"
-	case Select = "select"
-	
-	//case         defer        go           map          struct
-	//chan         else         goto         package      switch
-	//const        fallthrough  if           range        type
-	//continue     for          import       return       var
-}
-
 final class EditorView: NSTextView {
 	static fileprivate let keyWords = "break|default|func|interface|select|case|defer|go|map|struct|chan|else|goto|package|switch|const|fallthrough|if|range|type|continue|for|import|return|var"
 	static fileprivate let keyWordsRegex = try! NSRegularExpression(pattern: "\\b(\(EditorView.keyWords))\\b", options: [])
@@ -94,14 +81,21 @@ final class EditorView: NSTextView {
 		coloredSyntax(self.textStorage!)
 		filePath = fpath
 	}
+	
+	func save() {
+		guard let fpath = filePath else {
+			return
+		}
+		
+		do {
+			try textStorage?.string.write(toFile: fpath, atomically: true, encoding: .utf8)
+		}
+		catch let error as NSError {
+			Swift.print("\(error)")
+			// dialog with information
+		}
+	}
 }
-
-//break        default      func         interface    select
-//case         defer        go           map          struct
-//chan         else         goto         package      switch
-//const        fallthrough  if           range        type
-//continue     for          import       return       var
-
 
 extension EditorView: NSTextViewDelegate {
 	func textDidChange(_ notification: Notification) {
@@ -122,15 +116,11 @@ extension EditorView: NSTextStorageDelegate {
 		let string = textStorage.string
 		
 		textStorage.beginEditing()
-		
-		// usuwamy wszystkie kolory
 		textStorage.addAttributes([NSForegroundColorAttributeName:currentFontColor], range: NSMakeRange(0, string.characters.count))
 		
-		// kolorujemy słowa kluczowe
 		let matches = EditorView.keyWordsRegex.matches(in: string, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, string.characters.count))
 		for match in matches {
 			textStorage.addAttributes([NSForegroundColorAttributeName:NSColor.red], range: match.range)
-			
 		}
 		textStorage.endEditing()
 	}
