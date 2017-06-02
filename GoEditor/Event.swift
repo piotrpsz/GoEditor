@@ -11,7 +11,7 @@ import Foundation
 
 enum Event: String {
 	case applicationStarted
-	case mainDirectoryDidSelect
+	case mainDirectoryDidChange
 	case filesToOpenDidSelect
 	case runDidFinish
 	case saveRequest

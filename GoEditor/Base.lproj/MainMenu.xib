@@ -686,7 +686,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="445" height="483"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1129"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="445" height="483"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -727,9 +727,9 @@
                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="momentary" id="MaI-p3-a12">
                                 <font key="font" metaFont="system"/>
                                 <segments>
-                                    <segment label="Run"/>
-                                    <segment label="Build" tag="1"/>
-                                    <segment label="Kill"/>
+                                    <segment label="Run" enabled="NO"/>
+                                    <segment label="Build" enabled="NO" tag="1"/>
+                                    <segment label="Kill" enabled="NO"/>
                                 </segments>
                             </segmentedCell>
                             <connections>
