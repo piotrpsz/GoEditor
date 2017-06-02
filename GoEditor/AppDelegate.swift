@@ -111,6 +111,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		if let path = Shared.mainPackageDirectory {
 			panel.directoryURL = URL(fileURLWithPath: path.withoutLastPathComponent())
 		}
+		else {
+			panel.directoryURL = URL(fileURLWithPath: NSHomeDirectory())
+		}
 		
 		panel.begin { retv in
 			if retv == NSFileHandlingPanelOKButton {
@@ -134,6 +137,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		panel.isExtensionHidden = false
 		if let path = Shared.lastOpenedFileDirectory {
 			panel.directoryURL = URL(fileURLWithPath: path)
+		}
+		else {
+			panel.directoryURL = URL(fileURLWithPath: NSHomeDirectory())
 		}
 		
 		panel.begin { retv in
