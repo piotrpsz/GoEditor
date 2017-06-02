@@ -13,7 +13,7 @@ final class EditorView: NSTextView {
 	static fileprivate let keyWordsRegex = try! NSRegularExpression(pattern: "\\b(\(EditorView.keyWords))\\b", options: [])
 	
 	fileprivate var currentFontColor = NSColor.white
-	private var filePath: String?
+	fileprivate var filePath: String?
 	
 	override var backgroundColor: NSColor {
 		get {
@@ -74,14 +74,20 @@ final class EditorView: NSTextView {
 		guard let string = try? String(contentsOfFile: fpath) else {
 			return
 		}
-		textStorage!.replaceCharacters(in: NSRange(location: 0, length: textStorage!.characters.count), with: NSAttributedString(string: string))
-		updateGeometry()
-		textColor = currentFontColor
-		font = NSFont.systemFont(ofSize: 12.0)
-		coloredSyntax(self.textStorage!)
+        setNewContent(string: string)
 		filePath = fpath
 	}
-	
+
+    fileprivate func setNewContent(string: String) {
+        after(0.1) {
+            self.textStorage!.replaceCharacters(in: NSRange(location: 0, length: self.textStorage!.characters.count), with: NSAttributedString(string: string))
+            self.updateGeometry()
+            self.textColor = self.currentFontColor
+            self.font = NSFont.systemFont(ofSize: 12.0)
+            self.coloredSyntax(self.textStorage!)
+        }
+    }
+    
 	func save() {
 		guard let fpath = filePath else {
 			return
@@ -99,7 +105,20 @@ final class EditorView: NSTextView {
 
 extension EditorView: NSTextViewDelegate {
 	func textDidChange(_ notification: Notification) {
+        try? self.textStorage!.string.write(toFile: filePath!, atomically: true, encoding: .utf8)
 		updateGeometry()
+        let (status, string) = GoTool.fmt(fpath: filePath!)
+        if status == 0 {
+            if let string = string {
+                try? string.write(toFile: filePath!, atomically: true, encoding: .utf8)
+                setNewContent(string: string)
+            }
+        }
+        else {
+            Swift.print("\(string)")
+        }
+//        Swift.print("Status: \(status)")
+//        Swift.print("String: \(string)")
 	}
 }
 
