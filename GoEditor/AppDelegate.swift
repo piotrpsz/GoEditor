@@ -29,6 +29,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
     }
     
 	func applicationWillFinishLaunching(_ notification: Notification) {
+        _ = Shared.environment()
+        
 		let mainSplitView = MainSplitView(frame: window.contentView!.frame)
 		viewController = WindowViewController()
 		viewController.view = mainSplitView
@@ -41,10 +43,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
 	}
 	
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-//		let data = ProcessInfo.processInfo.environment
-//		data.forEach {
-//			Swift.print("\($0)")
-//		}
 		registerObservers()
     }
 
