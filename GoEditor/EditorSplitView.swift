@@ -107,6 +107,11 @@ class EditorSplitView: NSSplitView, EventObserver {
 				}
 			}
 		}
+		registerEvent(Event.saveRequest) { note in
+			self.editors.forEach {
+				$0.save()
+			}
+		}
 	}
 	
 	private func rects() -> (CGRect, CGRect) {

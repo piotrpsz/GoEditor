@@ -181,6 +181,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	private func kill() {
 		
 	}
+	
+	//****************************************************************
+	//*                                                              *
+	//*                  M E N U   A C T I O N S                     *
+	//*                                                              *
+	//****************************************************************
+	
+	@IBAction func saveDidSelect(_ sender: AnyObject) {
+		Event.saveRequest.dispatch()
+	}
 }
 
 extension AppDelegate: NSWindowDelegate {
