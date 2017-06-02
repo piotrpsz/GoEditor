@@ -114,15 +114,40 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			}
 			panel.directoryURL = URL(fileURLWithPath: path)
 		}
+		
+		panel.begin { status in
+			if status == NSFileHandlingPanelOKButton {
+				if let path = panel.urls.first?.path {
+					Shared.mainPackageDirectory = path
+					Event.mainDirectoryDidSelect.dispatch()
+				}
+			}
+		}
+	}
+	
+	private func openFile() {
+		let panel = NSOpenPanel()
+		panel.canChooseFiles = true
+		panel.canChooseDirectories = false
+		panel.allowsMultipleSelection = true
+		panel.resolvesAliases = true
+		panel.title = "Open file(s)"
+		panel.canCreateDirectories = true
+		panel.showsHiddenFiles = false
+		panel.isExtensionHidden = false
+		
+		if var path = Shared.mainPackageDirectory {
+			if let index = path.lastOccurenceOf(char: "/") {
+				path = path.substring(to: index)
+			}
+			panel.directoryURL = URL(fileURLWithPath: path)
+		}
 		if panel.runModal() == NSFileHandlingPanelOKButton {
 			if let path = panel.urls.first?.path {
 				Shared.mainPackageDirectory = path
 				Event.mainDirectoryDidSelect.dispatch()
 			}
 		}
-	}
-	
-	private func openFile() {
 		
 	}
 	
