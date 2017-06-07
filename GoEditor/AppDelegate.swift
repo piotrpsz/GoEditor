@@ -65,12 +65,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
 		return true
 	}
 
-	func applicationShouldTerminate(_ sender: NSApplication) -> NSApplicationTerminateReply {
+	func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
 		return .terminateNow
 	}
 	
 	private func windowFrameRect() -> NSRect? {
-		if let screenRect = NSScreen.main()?.frame {
+		if let screenRect = NSScreen.main?.frame {
 			var frame = NSZeroRect
 			frame.size.width = screenRect.size.width * 0.7
 			frame.size.height = screenRect.size.height * 0.8
@@ -126,7 +126,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
 		}
 		
 		panel.begin { retv in
-			if retv == NSFileHandlingPanelOKButton {
+			if retv.rawValue == NSFileHandlingPanelOKButton {
 				if let path = panel.urls.first?.path {
 					Shared.mainPackageDirectory = path
 				}
@@ -152,7 +152,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
 		}
 		
 		panel.begin { retv in
-			if retv == NSFileHandlingPanelOKButton {
+			if retv.rawValue == NSFileHandlingPanelOKButton {
 				let urls = panel.urls
 				if urls.isNotEmpty {
 					let files = urls.map { $0.path }
