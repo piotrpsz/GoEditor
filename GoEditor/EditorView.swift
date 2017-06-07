@@ -9,20 +9,20 @@
 import Cocoa
 
 final class EditorView: NSTextView {
-    static fileprivate let keyWords = "break|default|func|interface|select|case|defer|go|map|struct|chan|else|goto|package|switch|const|fallthrough|if|range|type|continue|for|import|return|var"
-    static fileprivate let keyWordsRegex = try! NSRegularExpression(pattern: "\\b(\(EditorView.keyWords))\\b", options: [])
-    
-    fileprivate var currentFontColor = NSColor.white
-    private var filePath: String?
-    
-    override var backgroundColor: NSColor {
-        get {
-            return NSColor(calibratedWhite: 0.2, alpha: 1.0)
-        }
-        set {
-            
-        }
-    }
+	static fileprivate let keyWords = "break|default|func|interface|select|case|defer|go|map|struct|chan|else|goto|package|switch|const|fallthrough|if|range|type|continue|for|import|return|var"
+	static fileprivate let keyWordsRegex = try! NSRegularExpression(pattern: "\\b(\(EditorView.keyWords))\\b", options: [])
+	
+	fileprivate var currentFontColor = NSColor.white
+	fileprivate var filePath: String?
+	
+	override var backgroundColor: NSColor {
+		get {
+			return NSColor(calibratedWhite: 0.2, alpha: 1.0)
+		}
+		set {
+			
+		}
+	}
 
     required init(frame frameRect: NSRect, filePath: String? = nil) {
         let textContainer = NSTextContainer(containerSize: frameRect.size)
@@ -60,6 +60,7 @@ final class EditorView: NSTextView {
         coloredSyntax(self.textStorage!)
         
 
+<<<<<<< HEAD
     }
     
     required init?(coder: NSCoder) {
@@ -101,6 +102,68 @@ extension EditorView: NSTextViewDelegate {
     func textDidChange(_ notification: Notification) {
         updateGeometry()
     }
+=======
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
+	fileprivate func updateGeometry() {
+		frame.size.height = textStorage!.size().height + font!.pointSize
+	}
+	
+	func openFile(fpath: String) {
+		guard let string = try? String(contentsOfFile: fpath) else {
+			return
+		}
+        setNewContent(string: string)
+		filePath = fpath
+	}
+
+    fileprivate func setNewContent(string: String) {
+        after(0.1) {
+            self.textStorage!.replaceCharacters(in: NSRange(location: 0, length: self.textStorage!.characters.count), with: NSAttributedString(string: string))
+            self.updateGeometry()
+            self.textColor = self.currentFontColor
+            self.font = NSFont.systemFont(ofSize: 12.0)
+            self.coloredSyntax(self.textStorage!)
+        }
+    }
+    
+	func save() {
+		guard let fpath = filePath else {
+			return
+		}
+		
+		do {
+			try textStorage?.string.write(toFile: fpath, atomically: true, encoding: .utf8)
+		}
+		catch let error as NSError {
+			Swift.print("\(error)")
+			// dialog with information
+		}
+	}
+}
+
+extension EditorView: NSTextViewDelegate {
+	func textDidChange(_ notification: Notification) {
+        try? self.textStorage!.string.write(toFile: filePath!, atomically: true, encoding: .utf8)
+		updateGeometry()
+        let (status, string) = GoTool.fmt(fpath: filePath!)
+        if status == 0 {
+            if let string = string {
+                try? string.write(toFile: filePath!, atomically: true, encoding: .utf8)
+                setNewContent(string: string)
+            }
+        }
+        else {
+            Swift.print("\(string)")
+        }
+//        Swift.print("Status: \(status)")
+//        Swift.print("String: \(string)")
+	}
+>>>>>>> cb14d0c886f2f327d9866e67d589e779c017ed08
 }
 
 extension EditorView: NSTextStorageDelegate {
