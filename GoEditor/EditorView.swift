@@ -58,51 +58,6 @@ final class EditorView: NSTextView {
         self.textStorage?.delegate = self
         updateGeometry()
         coloredSyntax(self.textStorage!)
-        
-
-<<<<<<< HEAD
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    fileprivate func updateGeometry() {
-        frame.size.height = textStorage!.size().height + font!.pointSize
-    }
-    
-    func openFile(fpath: String) {
-        guard let string = try? String(contentsOfFile: fpath) else {
-            return
-        }
-        textStorage!.replaceCharacters(in: NSRange(location: 0, length: textStorage!.characters.count), with: NSAttributedString(string: string))
-        updateGeometry()
-        textColor = currentFontColor
-        font = NSFont.systemFont(ofSize: 12.0)
-        coloredSyntax(self.textStorage!)
-        filePath = fpath
-    }
-    
-    func save() {
-        guard let fpath = filePath else {
-            return
-        }
-        
-        do {
-            try textStorage?.string.write(toFile: fpath, atomically: true, encoding: .utf8)
-        }
-        catch let error as NSError {
-            Swift.print("\(error)")
-            // dialog with information
-        }
-    }
-}
-
-extension EditorView: NSTextViewDelegate {
-    func textDidChange(_ notification: Notification) {
-        updateGeometry()
-    }
-=======
 	}
 	
 	required init?(coder: NSCoder) {
@@ -158,12 +113,10 @@ extension EditorView: NSTextViewDelegate {
             }
         }
         else {
-            Swift.print("\(string)")
         }
 //        Swift.print("Status: \(status)")
 //        Swift.print("String: \(string)")
 	}
->>>>>>> cb14d0c886f2f327d9866e67d589e779c017ed08
 }
 
 extension EditorView: NSTextStorageDelegate {
