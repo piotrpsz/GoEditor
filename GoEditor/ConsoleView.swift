@@ -59,12 +59,25 @@ class ConsoleView: NSTextView, EventObserver {
 
             }
         }
+		
+		registerEvent(Event.contentForConsole) { note in
+			if let text = note.userInfo?["text"] as? String {
+				self.setNewContent(string: text)
+			}
+		}
     }
 
     fileprivate func updateGeometry() {
         frame.size.height = textStorage!.size().height + font!.pointSize
     }
-
+	
+	private func setNewContent(string: String) {
+		self.textStorage!.replaceCharacters(in: NSRange(location: 0, length: self.textStorage!.characters.count), with: NSAttributedString(string: string))
+		self.updateGeometry()
+		self.textColor = NSColor.white
+		self.font = NSFont.systemFont(ofSize: 12.0)
+	}
+	
 //    override func draw(_ dirtyRect: NSRect) {
 //        super.draw(dirtyRect)
 //

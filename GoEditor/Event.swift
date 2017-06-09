@@ -15,8 +15,9 @@ enum Event: String {
 	case filesToOpenDidSelect
 	case runDidFinish
 	case saveRequest
+	case contentForConsole
 	
-	func dispatch(_ info: [String:AnyObject]? = nil) {
+	func dispatch(_ info: [String:Any]? = nil) {
 		NotificationCenter.default.post(name: Notification.Name(rawValue: self.rawValue), object: nil, userInfo: info)
 	}
 }
