@@ -9,7 +9,7 @@
 import Cocoa
 
 final class EditorView: NSTextView, NSTextStorageDelegate {
-	static private let defaultFileName = "Unknown.go"
+	static private let initialFileName = "Unknown.go"
 	static fileprivate let keyWords = "break|default|func|interface|select|case|defer|go|map|struct|chan|else|goto|package|switch|const|fallthrough|if|range|type|continue|for|import|return|var"
 	static fileprivate let keyWordsRegex = try! NSRegularExpression(pattern: "\\b(\(EditorView.keyWords))\\b", options: [])
 	static fileprivate let keyColor = NSColor(calibratedRed: 1.0, green: 0.2, blue: 0.3, alpha: 0.9)
@@ -28,6 +28,14 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 			
 		}
 	}
+	
+	var isEmpty: Bool {
+		if let count = textStorage?.string.characters.count {
+			return (count == 0)
+		}
+		return true
+	}
+	var isChanged = false
 
     required init(frame frameRect: NSRect, filePath: String? = nil) {
         let textContainer = NSTextContainer(containerSize: frameRect.size)
@@ -41,7 +49,7 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 		if let fpath = filePath {
 			self.filePath = fpath
 		} else {
-			self.filePath = EditorView.defaultFileName
+			self.filePath = EditorView.initialFileName
 		}
 		
         super.init(frame: frameRect, textContainer: textContainer)
@@ -97,16 +105,36 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
     }
     
 	func save() {
-		guard  filePath != "tmp.go" else {
+		guard !isEmpty && isChanged else {
 			return
+		}
+		if filePath == EditorView.initialFileName {
+			let panel = NSSavePanel()
+			panel.canCreateDirectories = true
+			panel.showsHiddenFiles = false
+			panel.isExtensionHidden = false
+			panel.nameFieldStringValue = filePath
+			if let path = Shared.mainPackageDirectory {
+				panel.directoryURL = URL(fileURLWithPath: path.withoutLastPathComponent()).appendingPathComponent(filePath)
+			} else {
+				panel.directoryURL = URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(filePath)
+			}
+			panel.begin { retv in
+				if retv.rawValue == NSFileHandlingPanelOKButton {
+					if let path = panel.url {
+						Swift.print("\(path)")
+					}
+				}
+			}
+			
 		}
 		
 		do {
 			try textStorage?.string.write(toFile: filePath, atomically: true, encoding: .utf8)
+			isChanged = false
 		}
 		catch let error as NSError {
-			Swift.print("\(error)")
-			// dialog with information
+			Shared.alert(title: Shared.appName, message: "Can't save the file!", information: error.localizedDescription)
 		}
 	}
 	
@@ -147,7 +175,6 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 		
 		if delta != -1 {
 			let changedText = textStorage.attributedSubstring(from: editedRange).string
-//			Swift.print("text:\(changedText), range:\(editedRange), delta:\(delta)")
 			if changedText == "{" {
 				editOperation = EditOperation(char: "{", range: editedRange)
 			} else if changedText == "(" {
@@ -165,6 +192,8 @@ extension EditorView: NSTextViewDelegate {
 		guard let textStorage = textStorage else {
 			return
 		}
+		isChanged = true
+		
 		if let editOperation = editOperation {
 			switch editOperation.char {
 			case "{":

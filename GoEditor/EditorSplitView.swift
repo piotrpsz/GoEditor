@@ -27,19 +27,7 @@ class EditorSplitView: NSSplitView, EventObserver {
     override var dividerColor: NSColor {
         return NSColor.darkGray
     }
-    
-    private let editorScrollView: NSScrollView = {
-        let sv = NSScrollView(frame: CGRect.zero)
-        sv.hasVerticalScroller = true
-        sv.hasHorizontalScroller = true
-        sv.scrollerStyle = .overlay
-        sv.borderType = .noBorder
-        sv.autohidesScrollers = false
-        sv.autoresizingMask = [.width, .height]
-        sv.autoresizesSubviews = true
-        return sv
-    }()
-
+	
     private let consoleScrollView: NSScrollView = {
         let sv = NSScrollView(frame: CGRect.zero)
         sv.hasVerticalScroller = true
@@ -66,14 +54,12 @@ class EditorSplitView: NSSplitView, EventObserver {
                                     height: frameRect.height - defaultDividerThickness - consoleScrollViewRect.size.height)
 		
 		let editor = TextEditor(frame: editorViewRect)
-//        editorScrollView.frame = editorScrollViewRect
+		editors.append(editor)
+		currentEditorIndex = 0
+		
         consoleScrollView.frame = consoleScrollViewRect
-        
         super.init(frame: frameRect)
-        
-        
-//        editorScrollView.documentView = editors[0]
-//        editors[0].lnv_setUpLineNumberView()
+		
         consoleScrollView.documentView = consoleView
 		
         
@@ -95,7 +81,9 @@ class EditorSplitView: NSSplitView, EventObserver {
     func registerObservers() {
         registerEvent(Event.applicationStarted) { note in
             let (editorScrollViewRect, consoleScrollViewRect) = self.rects()
-            self.editorScrollView.frame = editorScrollViewRect
+			self.editors.forEach {
+				$0.frame = editorScrollViewRect
+			}
             self.consoleScrollView.frame = consoleScrollViewRect
         }
         
@@ -110,9 +98,9 @@ class EditorSplitView: NSSplitView, EventObserver {
 //            }
         }
         registerEvent(Event.saveRequest) { note in
-//            self.editors.forEach {
-//                $0.save()
-//            }
+            self.editors.forEach {
+                $0.editor.save()
+            }
         }
     }
     

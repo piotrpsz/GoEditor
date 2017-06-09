@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class TextEditor: NSScrollView {
+final class TextEditor: NSScrollView {
 	var editor: EditorView!
 	
 	override var isFlipped: Bool {
@@ -33,6 +33,4 @@ class TextEditor: NSScrollView {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
-	
 }

@@ -10,6 +10,7 @@ import Cocoa
 
 final class Shared {
     static private var envData: [String:String]?
+	static let appName = "GoEditor"
     
     static var mainPackageDirectory: String? {
         didSet {
@@ -72,4 +73,13 @@ final class Shared {
 		}
 		return true
 	}
+	
+	static func alert(title: String, message: String, information: String?) {
+		let alert = NSAlert()
+		alert.window.title = title
+		alert.messageText = message
+		alert.informativeText = information ?? ""
+		alert.runModal()
+	}
+	
 }

@@ -121,8 +121,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
 		panel.isExtensionHidden = false
 		if let path = Shared.mainPackageDirectory {
 			panel.directoryURL = URL(fileURLWithPath: path.withoutLastPathComponent())
-		}
-		else {
+		} else {
 			panel.directoryURL = URL(fileURLWithPath: NSHomeDirectory())
 		}
 		
