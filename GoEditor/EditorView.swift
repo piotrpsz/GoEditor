@@ -12,9 +12,11 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 	static private let defaultFileName = "Unknown.go"
 	static fileprivate let keyWords = "break|default|func|interface|select|case|defer|go|map|struct|chan|else|goto|package|switch|const|fallthrough|if|range|type|continue|for|import|return|var"
 	static fileprivate let keyWordsRegex = try! NSRegularExpression(pattern: "\\b(\(EditorView.keyWords))\\b", options: [])
+	static fileprivate let keyColor = NSColor(calibratedRed: 1.0, green: 0.2, blue: 0.3, alpha: 0.9)
 	
 	private var currentFontColor = NSColor.white
 	fileprivate var editOperation: EditOperation?
+	fileprivate var localEditing = false
 	
 	var filePath: String!
 	
@@ -123,27 +125,35 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 	private func coloredSyntax(_ textStorage: NSTextStorage) {
 		let string = textStorage.string
 		
+		self.localEditing = true
 		textStorage.beginEditing()
-		textStorage.addAttributes([NSAttributedStringKey.foregroundColor:currentFontColor], range: NSMakeRange(0, string.characters.count))
+		textStorage.addAttributes([NSAttributedStringKey.foregroundColor:self.currentFontColor], range: NSMakeRange(0, string.characters.count))
 		let matches = EditorView.keyWordsRegex.matches(in: string, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, string.characters.count))
 		for match in matches {
-			textStorage.addAttributes([NSAttributedStringKey.foregroundColor:NSColor.red], range: match.range)
+			textStorage.addAttributes([NSAttributedStringKey.foregroundColor:EditorView.keyColor], range: match.range)
 		}
 		textStorage.endEditing()
+		self.localEditing = false
 	}
 	
 	// MARK: - NSTextStorageDelegate
 	
 	func textStorage(_ textStorage: NSTextStorage, didProcessEditing editedMask: NSTextStorageEditActions, range editedRange: NSRange, changeInLength delta: Int) {
+		guard !localEditing else {
+			return
+		}
 		self.coloredSyntax(textStorage)
 		editOperation = nil
 		
 		if delta != -1 {
 			let changedText = textStorage.attributedSubstring(from: editedRange).string
+//			Swift.print("text:\(changedText), range:\(editedRange), delta:\(delta)")
 			if changedText == "{" {
 				editOperation = EditOperation(char: "{", range: editedRange)
 			} else if changedText == "(" {
 				editOperation = EditOperation(char: "(", range: editedRange)
+			} else if changedText == "\n" {
+				editOperation = EditOperation(char: "\n", range: editedRange)
 			}
 		}
 	}
@@ -161,6 +171,8 @@ extension EditorView: NSTextViewDelegate {
 				braceDidAdd()
 			case "(":
 				bracketDidAdd()
+			case "\n":
+				newLineDidAdd()
 			default:
 				()
 			}
@@ -207,24 +219,44 @@ extension EditorView: NSTextViewDelegate {
 		setSelectedRange(NSMakeRange(currentCursorPosition, 0))
 	}
 	
-	func prefixOfLine(withIndex index: Int, text: String) -> String {
-		let spaces = CharacterSet.whitespaces
-		var position = text.index(text.startIndex, offsetBy: index)
+	private func newLineDidAdd() {
+		guard let textStorage = textStorage, let editOperation = editOperation else {
+			return
+		}
+		var text = textStorage.string
+		var currentCursorPosition = selectedRange().location
+		let prefix = prefixOfLine(withIndex: currentCursorPosition - 2, text: text)
+		let index = text.index(text.startIndex, offsetBy: editOperation.range.location + editOperation.range.length)
+		text.insert(contentsOf: prefix, at: index)
+		
+		textStorage.beginEditing()
+		textStorage.replaceCharacters(in: NSMakeRange(0, textStorage.characters.count), with: text)
+		textStorage.endEditing()
+		
+		currentCursorPosition += prefix.characters.count
+		setSelectedRange(NSMakeRange(currentCursorPosition, 0))
+	}
+	
+	private func prefixOfLine(withIndex index: Int, text: String) -> String {
 		var prefix = ""
-		while position >= text.startIndex {
-			let c = text[position]
-			if c == "\n" {
-				break
+		if index >= 0 {
+			let spaces = CharacterSet.whitespaces
+			var position = text.index(text.startIndex, offsetBy: index)
+			while position >= text.startIndex {
+				let c = text[position]
+				if c == "\n" {
+					break
+				}
+				if spaces.contains(c.unicodeScalars.first!) {
+					prefix.append(c)
+				} else {
+					prefix = ""
+				}
+				if position == text.startIndex {
+					break
+				}
+				position = text.index(before: position)
 			}
-			if spaces.contains(c.unicodeScalars.first!) {
-				prefix.append(c)
-			} else {
-				prefix = ""
-			}
-			if position == text.startIndex {
-				break
-			}
-			position = text.index(before: position)
 		}
 		return prefix
 	}
@@ -238,29 +270,29 @@ extension EditorView: NSTextViewDelegate {
 //		return false
 //	}
 	
-	private func gofmt() {
-		let temp = FileManager.default.temporaryDirectory.appendingPathComponent("GoEditor_tmp.go")
-		guard Shared.removeFile(at: temp) else {
-			fatalError()
-		}
-		
-		do {
-			try self.textStorage!.string.write(to: temp, atomically: true, encoding: .utf8)
-		} catch let error as NSError {
-			Swift.print("\(error)")
-			fatalError()
-		}
-		
-		let (status, string) = GoTool.fmt(fpath: temp.path)
-		if status == 0 {
-			if let string = string {
-				setNewContent(string: string)
-			}
-		} else {
-			Event.contentForConsole.dispatch(["text":string as Any])
-			updateGeometry()
-			coloredSyntax(self.textStorage!)
-		}
-	}
+//	private func gofmt() {
+//		let temp = FileManager.default.temporaryDirectory.appendingPathComponent("GoEditor_tmp.go")
+//		guard Shared.removeFile(at: temp) else {
+//			fatalError()
+//		}
+//
+//		do {
+//			try self.textStorage!.string.write(to: temp, atomically: true, encoding: .utf8)
+//		} catch let error as NSError {
+//			Swift.print("\(error)")
+//			fatalError()
+//		}
+//
+//		let (status, string) = GoTool.fmt(fpath: temp.path)
+//		if status == 0 {
+//			if let string = string {
+//				setNewContent(string: string)
+//			}
+//		} else {
+//			Event.contentForConsole.dispatch(["text":string as Any])
+//			updateGeometry()
+//			coloredSyntax(self.textStorage!)
+//		}
+//	}
 }
 
