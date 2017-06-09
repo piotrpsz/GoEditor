@@ -13,6 +13,8 @@
 		AEA96D0E1EDFFC7800D1C674 /* GoTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA96D0D1EDFFC7800D1C674 /* GoTool.swift */; };
 		AEA96D3E1EE000A700D1C674 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AEA96D3D1EE000A700D1C674 /* libsqlite3.tbd */; };
 		AEA96D471EE0A32800D1C674 /* WindowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA96D461EE0A32800D1C674 /* WindowViewController.swift */; };
+		AEAA524C1EEAB55E005AC733 /* MainPackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEAA524B1EEAB55E005AC733 /* MainPackageView.swift */; };
+		AEAA524E1EEAB577005AC733 /* OpenFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEAA524D1EEAB577005AC733 /* OpenFilesView.swift */; };
 		AEB9BDE81E9A406A0094920B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB9BDE71E9A406A0094920B /* AppDelegate.swift */; };
 		AEB9BDEA1E9A406A0094920B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AEB9BDE91E9A406A0094920B /* Assets.xcassets */; };
 		AEB9BDED1E9A406A0094920B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AEB9BDEB1E9A406A0094920B /* MainMenu.xib */; };
@@ -51,6 +53,11 @@
 		AEA96D0D1EDFFC7800D1C674 /* GoTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoTool.swift; sourceTree = "<group>"; };
 		AEA96D3D1EE000A700D1C674 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		AEA96D461EE0A32800D1C674 /* WindowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowViewController.swift; sourceTree = "<group>"; };
+		AEAA524B1EEAB55E005AC733 /* MainPackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPackageView.swift; sourceTree = "<group>"; };
+		AEAA524D1EEAB577005AC733 /* OpenFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFilesView.swift; sourceTree = "<group>"; };
+		AEB4D9571EEAC61E00B2BA3B /* OpenFilesTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFilesTableCell.swift; sourceTree = "<group>"; };
+		AEB4D9581EEAC61E00B2BA3B /* OpenFilesTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFilesTableView.swift; sourceTree = "<group>"; };
+		AEB4D9591EEAC61E00B2BA3B /* OpenFilesTableRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFilesTableRow.swift; sourceTree = "<group>"; };
 		AEB9BDE41E9A406A0094920B /* GoEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEB9BDE71E9A406A0094920B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AEB9BDE91E9A406A0094920B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -105,6 +112,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		AEAA524A1EEA9B4E005AC733 /* Project Side Views */ = {
+			isa = PBXGroup;
+			children = (
+				AE5D18D91EDCADC700A1505E /* ProjectView.swift */,
+				AEAA524B1EEAB55E005AC733 /* MainPackageView.swift */,
+				AEAA524D1EEAB577005AC733 /* OpenFilesView.swift */,
+				AEB4D9571EEAC61E00B2BA3B /* OpenFilesTableCell.swift */,
+				AEB4D9591EEAC61E00B2BA3B /* OpenFilesTableRow.swift */,
+				AEB4D9581EEAC61E00B2BA3B /* OpenFilesTableView.swift */,
+			);
+			name = "Project Side Views";
+			sourceTree = "<group>";
+		};
 		AEB9BDDB1E9A40690094920B = {
 			isa = PBXGroup;
 			children = (
@@ -136,7 +156,7 @@
 				AEC31F221EDC625000C8A3CB /* LineNumberRulerView.swift */,
 				AEC31F281EDC674100C8A3CB /* EditorView.swift */,
 				AEC31F2A1EDC676300C8A3CB /* ConsoleView.swift */,
-				AE5D18D91EDCADC700A1505E /* ProjectView.swift */,
+				AEAA524A1EEA9B4E005AC733 /* Project Side Views */,
 				AEC31F2C1EDC6FC400C8A3CB /* Event.swift */,
 				AEC31F2D1EDC6FC400C8A3CB /* EventObserver.swift */,
 				AEA96D0D1EDFFC7800D1C674 /* GoTool.swift */,
@@ -230,7 +250,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Piotr Pszczolkowski";
 				TargetAttributes = {
 					AEB9BDE31E9A40690094920B = {
@@ -312,9 +332,11 @@
 				AEB9BDE81E9A406A0094920B /* AppDelegate.swift in Sources */,
 				AEC31F271EDC65A500C8A3CB /* EditorSplitView.swift in Sources */,
 				AEC31F251EDC659000C8A3CB /* MainSplitView.swift in Sources */,
+				AEAA524C1EEAB55E005AC733 /* MainPackageView.swift in Sources */,
 				AEA96D471EE0A32800D1C674 /* WindowViewController.swift in Sources */,
 				AEC31F2B1EDC676300C8A3CB /* ConsoleView.swift in Sources */,
 				AE29D6921EE18B6600114EFD /* Extensions.swift in Sources */,
+				AEAA524E1EEAB577005AC733 /* OpenFilesView.swift in Sources */,
 				AE2CC2001EE15D740093610E /* Shared.swift in Sources */,
 				AE5D18DA1EDCADC700A1505E /* ProjectView.swift in Sources */,
 				AEC31F2E1EDC6FC400C8A3CB /* Event.swift in Sources */,
@@ -374,7 +396,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -382,7 +406,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -424,7 +452,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -432,7 +462,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

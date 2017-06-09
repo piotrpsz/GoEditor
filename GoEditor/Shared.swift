@@ -6,7 +6,7 @@
 //  Copyright © 2017 Piotr Pszczolkowski. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 final class Shared {
     static private var envData: [String:String]?
@@ -36,4 +36,12 @@ final class Shared {
             envData = dictionary
         }
     }
+	
+	static func drawSubviews(of view: NSView, level: Int = 0) {
+		let filler = String(repeating: " ", count: level)
+		print("\(filler)\(view)")
+		for subview in view.subviews {
+			drawSubviews(of: subview, level: level + 1)
+		}
+	}
 }
