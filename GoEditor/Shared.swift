@@ -44,4 +44,32 @@ final class Shared {
 			drawSubviews(of: subview, level: level + 1)
 		}
 	}
+	
+	static var privateDirectory: String? {
+		get {
+			let path = NSHomeDirectory() + "/.GoEditor"
+			let fm = Foundation.FileManager.default
+			do {
+				try fm.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
+			}
+			catch let error as NSError {
+				print("Can't create applications directory: \(error.localizedDescription)")
+				return nil
+			}
+			return path
+		}
+	}
+	
+	static func removeFile(at url: URL) -> Bool {
+		let fm = FileManager.default
+		do {
+			if fm.fileExists(atPath: url.path) {
+				try fm.removeItem(at: url)
+			}
+		} catch let error as NSError {
+			Swift.print("\(error.localizedDescription)")
+			return false
+		}
+		return true
+	}
 }

@@ -12,7 +12,7 @@ class EditorSplitView: NSSplitView, EventObserver {
     private let consoleView = ConsoleView(frame: CGRect.zero)
     private let defaultDividerThickness = CGFloat(2.0)
     private let consoleScrollViewInitialHeight = CGFloat(200.0)
-    private var editors: [EditorView] = [EditorView(frame: CGRect.zero)]
+    private var editors: [TextEditor] = []
     private var currentEditorIndex = 0
     
     var observers: [NSObjectProtocol] = []
@@ -54,28 +54,30 @@ class EditorSplitView: NSSplitView, EventObserver {
 
     
     override init(frame frameRect: NSRect) {
+		
         let consoleScrollViewRect = CGRect(x: frameRect.origin.x,
                                            y: frameRect.height - consoleScrollViewInitialHeight,
                                            width: frameRect.width,
                                            height: consoleScrollViewInitialHeight)
         
-        let editorScrollViewRect = CGRect(x: frameRect.origin.x,
-                                          y: frameRect.origin.y,
-                                          width: frameRect.width,
-                                          height: frameRect.height - defaultDividerThickness - consoleScrollViewRect.size.height)
-
-        editorScrollView.frame = editorScrollViewRect
+        let editorViewRect = CGRect(x: frameRect.origin.x,
+                                    y: frameRect.origin.y,
+                                    width: frameRect.width,
+                                    height: frameRect.height - defaultDividerThickness - consoleScrollViewRect.size.height)
+		
+		let editor = TextEditor(frame: editorViewRect)
+//        editorScrollView.frame = editorScrollViewRect
         consoleScrollView.frame = consoleScrollViewRect
         
         super.init(frame: frameRect)
         
         
-        editorScrollView.documentView = editors[0]
-        editors[0].lnv_setUpLineNumberView()
+//        editorScrollView.documentView = editors[0]
+//        editors[0].lnv_setUpLineNumberView()
         consoleScrollView.documentView = consoleView
+		
         
-        
-        subviews = [editorScrollView, consoleScrollView]
+        subviews = [editor, consoleScrollView]
         dividerStyle = .thick
         arrangesAllSubviews = true
         
@@ -98,19 +100,19 @@ class EditorSplitView: NSSplitView, EventObserver {
         }
         
         registerEvent(Event.filesToOpenDidSelect) { note in
-            if let files = note.userInfo?["files"] as? [String] {
-                for fpath in files {
-                    let editor = EditorView(frame: self.editorScrollView.frame, filePath: fpath)
-                    self.editorScrollView.documentView = editor
-                    editor.lnv_setUpLineNumberView()
-                    self.editors.append(editor)
-                }
-            }
+//            if let files = note.userInfo?["files"] as? [String] {
+//                for fpath in files {
+//                    let editor = EditorView(frame: self.editorScrollView.frame, filePath: fpath)
+//                    self.editorScrollView.documentView = editor
+//                    editor.lnv_setUpLineNumberView()
+//                    self.editors.append(editor)
+//                }
+//            }
         }
         registerEvent(Event.saveRequest) { note in
-            self.editors.forEach {
-                $0.save()
-            }
+//            self.editors.forEach {
+//                $0.save()
+//            }
         }
     }
     

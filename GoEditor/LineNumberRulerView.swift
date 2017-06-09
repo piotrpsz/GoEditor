@@ -41,12 +41,10 @@ extension NSTextView {
 	}
 	
 	@objc func lnv_framDidChange(notification: NSNotification) {
-		
 		lineNumberView.needsDisplay = true
 	}
 	
 	@objc func lnv_textDidChange(notification: NSNotification) {
-		
 		lineNumberView.needsDisplay = true
 	}
 }
