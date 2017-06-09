@@ -11,7 +11,7 @@ import Cocoa
 final class MainSplitView: NSSplitView, EventObserver {
 	fileprivate let projectView: ProjectView
 	fileprivate let editorSplitView: EditorSplitView
-	fileprivate let projectViewInitialWidth = CGFloat(200.0)
+	fileprivate let projectViewInitialWidth = CGFloat(210.0)
 	fileprivate let defaultDividerThickness = CGFloat(2.0)
 	
 	var observers: [NSObjectProtocol] = []

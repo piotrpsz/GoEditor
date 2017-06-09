@@ -30,8 +30,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
     
 	func applicationWillFinishLaunching(_ notification: Notification) {
         _ = Shared.environment()
-        
-		let mainSplitView = MainSplitView(frame: window.contentView!.frame)
+		
+		let rect = window.contentView!.frame
+		let mainSplitView = MainSplitView(frame: rect)
 		viewController = WindowViewController()
 		viewController.view = mainSplitView
 		window.contentViewController = viewController
