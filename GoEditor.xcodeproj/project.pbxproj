@@ -13,6 +13,7 @@
 		AE03DB371EEAE5570057D5DE /* TextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE03DB361EEAE5570057D5DE /* TextEditor.swift */; };
 		AE29D6921EE18B6600114EFD /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE29D6911EE18B6600114EFD /* Extensions.swift */; };
 		AE2CC2001EE15D740093610E /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2CC1FF1EE15D740093610E /* Shared.swift */; };
+		AE411B591EF16DA700828FE6 /* Mutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECC6C9F1EF16D0400386C73 /* Mutex.swift */; };
 		AE5D18DA1EDCADC700A1505E /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5D18D91EDCADC700A1505E /* ProjectView.swift */; };
 		AEA96D0E1EDFFC7800D1C674 /* GoTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA96D0D1EDFFC7800D1C674 /* GoTool.swift */; };
 		AEA96D3E1EE000A700D1C674 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AEA96D3D1EE000A700D1C674 /* libsqlite3.tbd */; };
@@ -31,6 +32,7 @@
 		AEC31F2B1EDC676300C8A3CB /* ConsoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC31F2A1EDC676300C8A3CB /* ConsoleView.swift */; };
 		AEC31F2E1EDC6FC400C8A3CB /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC31F2C1EDC6FC400C8A3CB /* Event.swift */; };
 		AEC31F2F1EDC6FC400C8A3CB /* EventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC31F2D1EDC6FC400C8A3CB /* EventObserver.swift */; };
+		AEC6BC2B1EEEE7BD00626AAF /* EditorsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC6BC2A1EEEE7BD00626AAF /* EditorsContainer.swift */; };
 		AEFB1B941EEB25690053F12D /* EditOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFB1B931EEB25690053F12D /* EditOperation.swift */; };
 /* End PBXBuildFile section */
 
@@ -82,6 +84,8 @@
 		AEC31F2A1EDC676300C8A3CB /* ConsoleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleView.swift; sourceTree = "<group>"; };
 		AEC31F2C1EDC6FC400C8A3CB /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		AEC31F2D1EDC6FC400C8A3CB /* EventObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventObserver.swift; sourceTree = "<group>"; };
+		AEC6BC2A1EEEE7BD00626AAF /* EditorsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorsContainer.swift; sourceTree = "<group>"; };
+		AECC6C9F1EF16D0400386C73 /* Mutex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutex.swift; sourceTree = "<group>"; };
 		AEFB1B931EEB25690053F12D /* EditOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOperation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -171,6 +175,7 @@
 				AEC31F241EDC659000C8A3CB /* MainSplitView.swift */,
 				AEC31F261EDC65A500C8A3CB /* EditorSplitView.swift */,
 				AEC31F221EDC625000C8A3CB /* LineNumberRulerView.swift */,
+				AEC6BC2A1EEEE7BD00626AAF /* EditorsContainer.swift */,
 				AEC31F2A1EDC676300C8A3CB /* ConsoleView.swift */,
 				AE03DB351EEAE5200057D5DE /* Text Editor */,
 				AEAA524A1EEA9B4E005AC733 /* Project Side Views */,
@@ -178,6 +183,7 @@
 				AEC31F2D1EDC6FC400C8A3CB /* EventObserver.swift */,
 				AEA96D0D1EDFFC7800D1C674 /* GoTool.swift */,
 				AE2CC1FF1EE15D740093610E /* Shared.swift */,
+				AECC6C9F1EF16D0400386C73 /* Mutex.swift */,
 				AE29D6911EE18B6600114EFD /* Extensions.swift */,
 				AEB9BDE91E9A406A0094920B /* Assets.xcassets */,
 				AEB9BDEB1E9A406A0094920B /* MainMenu.xib */,
@@ -347,6 +353,7 @@
 				AEC31F2F1EDC6FC400C8A3CB /* EventObserver.swift in Sources */,
 				AEC31F231EDC625000C8A3CB /* LineNumberRulerView.swift in Sources */,
 				AEB9BDE81E9A406A0094920B /* AppDelegate.swift in Sources */,
+				AEC6BC2B1EEEE7BD00626AAF /* EditorsContainer.swift in Sources */,
 				AEC31F271EDC65A500C8A3CB /* EditorSplitView.swift in Sources */,
 				AE03DB371EEAE5570057D5DE /* TextEditor.swift in Sources */,
 				AE03DB321EEAD94D0057D5DE /* OpenFilesRowView.swift in Sources */,
@@ -359,6 +366,7 @@
 				AEFB1B941EEB25690053F12D /* EditOperation.swift in Sources */,
 				AE03DB301EEACD2A0057D5DE /* OpenFilesTableView.swift in Sources */,
 				AE2CC2001EE15D740093610E /* Shared.swift in Sources */,
+				AE411B591EF16DA700828FE6 /* Mutex.swift in Sources */,
 				AE03DB341EEADC2D0057D5DE /* OpenFilesCellView.swift in Sources */,
 				AE5D18DA1EDCADC700A1505E /* ProjectView.swift in Sources */,
 				AEC31F2E1EDC6FC400C8A3CB /* Event.swift in Sources */,

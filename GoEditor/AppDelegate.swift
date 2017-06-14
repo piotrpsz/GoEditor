@@ -121,8 +121,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
 		panel.isExtensionHidden = false
 		if let path = Shared.mainPackageDirectory {
 			panel.directoryURL = URL(fileURLWithPath: path.withoutLastPathComponent())
-		}
-		else {
+		} else {
 			panel.directoryURL = URL(fileURLWithPath: NSHomeDirectory())
 		}
 		
@@ -135,7 +134,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
 		}
 	}
 	
-	private func openFile() {
+	///
+	/// Open selected file.
+	///
+	@IBAction func openFile(_ sender: Any? = nil) {
 		let panel = NSOpenPanel()
 		panel.canChooseFiles = true
 		panel.canChooseDirectories = false
@@ -158,10 +160,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
 				if urls.isNotEmpty {
 					let files = urls.map { $0.path }
 					Shared.lastOpenedFileDirectory = files[0].withoutLastPathComponent().withoutLastPathComponent()
-					Event.filesToOpenDidSelect.dispatch(["files":files as AnyObject])
+					Event.filesToOpenRequest.dispatch(["files":files as AnyObject])
 				}
 			}
 		}
+	}
+	
+	@IBAction func newFile(_ sender: Any? = nil) {
+		Event.newFileRequest.dispatch()
 	}
 	
 	private func run() {
