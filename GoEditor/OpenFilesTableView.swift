@@ -16,6 +16,7 @@ class OpenFilesTableView: NSTableView {
 		col.isEditable = false
 		return col
 	}()
+	var onReload = false
 	
 	override init(frame frameRect: NSRect) {
 		super.init(frame: frameRect)
@@ -27,7 +28,7 @@ class OpenFilesTableView: NSTableView {
 		allowsMultipleSelection = false
 		allowsEmptySelection = false
 		allowsColumnSelection = false
-		floatsGroupRows = false
+		floatsGroupRows = true
 		headerView = nil
 		rowHeight = customRowHeight
 		selectionHighlightStyle = .none
@@ -36,5 +37,19 @@ class OpenFilesTableView: NSTableView {
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+	
+	override func reloadData() {
+		onReload = true
+		super.reloadData()
+		onReload = false
+	}
+	
+	func selectRow(at index: Int?) {
+		guard let index = index else {
+			return
+		}
+		self.selectRowIndexes(IndexSet(integer: index), byExtendingSelection: false)
+		self.scrollRowToVisible(index)
 	}
 }

@@ -8,15 +8,13 @@
 
 import Cocoa
 
-class EditorSplitView: NSSplitView, EventObserver {
+final class EditorSplitView: NSSplitView, EventObserver {
     private let consoleView = ConsoleView(frame: CGRect.zero)
     private let defaultDividerThickness = CGFloat(2.0)
     private let consoleScrollViewInitialHeight = CGFloat(200.0)
-    private var editors: [TextEditor] = []
-    private var currentEditorIndex = 0
-    
-    var observers: [NSObjectProtocol] = []
-    
+	private let editorsContainer = EditorsContainer()
+	
+	var observers: [NSObjectProtocol] = []
     override var isFlipped: Bool {
         return true
     }
@@ -53,9 +51,8 @@ class EditorSplitView: NSSplitView, EventObserver {
                                     width: frameRect.width,
                                     height: frameRect.height - defaultDividerThickness - consoleScrollViewRect.size.height)
 		
-		let editor = TextEditor(frame: editorViewRect)
-		editors.append(editor)
-		currentEditorIndex = 0
+		editorsContainer.frame = editorViewRect
+		editorsContainer.newEditor()
 		
         consoleScrollView.frame = consoleScrollViewRect
         super.init(frame: frameRect)
@@ -63,7 +60,7 @@ class EditorSplitView: NSSplitView, EventObserver {
         consoleScrollView.documentView = consoleView
 		
         
-        subviews = [editor, consoleScrollView]
+        subviews = [editorsContainer, consoleScrollView]
         dividerStyle = .thick
         arrangesAllSubviews = true
         
@@ -77,49 +74,29 @@ class EditorSplitView: NSSplitView, EventObserver {
     deinit {
         removeObservers()
     }
-    
+	
     func registerObservers() {
         registerEvent(Event.applicationStarted) { note in
-            let (editorScrollViewRect, consoleScrollViewRect) = self.rects()
-			self.editors.forEach {
-				$0.frame = editorScrollViewRect
-			}
-            self.consoleScrollView.frame = consoleScrollViewRect
-        }
-        
-        registerEvent(Event.filesToOpenDidSelect) { note in
-//            if let files = note.userInfo?["files"] as? [String] {
-//                for fpath in files {
-//                    let editor = EditorView(frame: self.editorScrollView.frame, filePath: fpath)
-//                    self.editorScrollView.documentView = editor
-//                    editor.lnv_setUpLineNumberView()
-//                    self.editors.append(editor)
-//                }
-//            }
-        }
-        registerEvent(Event.saveRequest) { note in
-            self.editors.forEach {
-                $0.editor.save()
-            }
+			(self.editorsContainer.frame, self.consoleScrollView.frame) = self.rects()
         }
     }
     
     private func rects() -> (CGRect, CGRect) {
         let rect = bounds
-        
+		
         let consoleScrollViewRect = CGRect(x: rect.origin.x,
                                            y: rect.height - consoleScrollViewInitialHeight,
                                            width: rect.width,
                                            height: consoleScrollViewInitialHeight)
-        
+		
         let editorScrollViewRect = CGRect(x: rect.origin.x,
                                           y: rect.origin.y,
                                           width: rect.width,
                                           height: rect.height - dividerThickness - consoleScrollViewRect.size.height)
-        
+		
         return (editorScrollViewRect, consoleScrollViewRect)
     }
-    
+	
 }
 
 

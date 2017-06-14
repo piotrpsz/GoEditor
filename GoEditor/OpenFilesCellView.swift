@@ -21,8 +21,8 @@ class OpenFilesCellView: NSTableCellView {
 	}
 	
 	override func draw(_ dirtyRect: NSRect) {
-		if let fpath = objectValue as? String {
-			let url = URL(fileURLWithPath: fpath)
+		if let editor = objectValue as? TextEditor {
+			let url = URL(fileURLWithPath: editor.editor.filePath)
 			let attrString = NSAttributedString(string: url.lastPathComponent, attributes: nameAttr)
 			let x = margin
 			let y = bounds.origin.y + (bounds.size.height - attrString.size().height) / 2.0

@@ -29,6 +29,10 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 		}
 	}
 	
+	override var acceptsFirstResponder: Bool {
+		return true
+	}
+	
 	var isEmpty: Bool {
 		if let count = textStorage?.string.characters.count {
 			return (count == 0)
@@ -97,18 +101,30 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
     fileprivate func setNewContent(string: String) {
         after(0.1) {
             self.textStorage!.replaceCharacters(in: NSRange(location: 0, length: self.textStorage!.characters.count), with: NSAttributedString(string: string))
+			self.setSelectedRange(NSMakeRange(0, 0))
             self.updateGeometry()
             self.textColor = self.currentFontColor
             self.font = NSFont.systemFont(ofSize: 12.0)
             self.coloredSyntax(self.textStorage!)
         }
     }
-    
+	
+//	override func moveToBeginningOfDocumentAndModifySelection(_ sender: Any?) {
+//
+//	}
+	
+	//
+	// Saves editor content to disk.
+	//
 	func save() {
 		guard !isEmpty && isChanged else {
+			// nothing to do
 			return
 		}
+		
+		var canSave = true
 		if filePath == EditorView.initialFileName {
+			canSave = false
 			let panel = NSSavePanel()
 			panel.canCreateDirectories = true
 			panel.showsHiddenFiles = false
@@ -121,17 +137,23 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 			}
 			panel.begin { retv in
 				if retv.rawValue == NSFileHandlingPanelOKButton {
-					if let path = panel.url {
-						Swift.print("\(path)")
+					if let url = panel.url {
+						self.filePath = url.path
+						canSave = true
+						Swift.print("Save to: \(self.filePath)")
 					}
 				}
 			}
-			
+		}
+		
+		guard canSave else {
+			return
 		}
 		
 		do {
 			try textStorage?.string.write(toFile: filePath, atomically: true, encoding: .utf8)
 			isChanged = false
+			Event.editorStateDidChange.dispatch()
 		}
 		catch let error as NSError {
 			Shared.alert(title: Shared.appName, message: "Can't save the file!", information: error.localizedDescription)
@@ -192,7 +214,10 @@ extension EditorView: NSTextViewDelegate {
 		guard let textStorage = textStorage else {
 			return
 		}
-		isChanged = true
+		if !isChanged {
+			isChanged = true
+			Event.editorStateDidChange.dispatch()
+		}
 		
 		if let editOperation = editOperation {
 			switch editOperation.char {

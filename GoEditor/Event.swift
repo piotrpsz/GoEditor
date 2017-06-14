@@ -12,12 +12,16 @@ import Foundation
 enum Event: String {
 	case applicationStarted
 	case mainDirectoryDidChange
-	case filesToOpenDidSelect
+	case filesToOpenRequest, newFileRequest
 	case runDidFinish
-	case saveRequest
+	case saveRequest, saveAsRequest, saveAllRequest
+	case editorsContainerContentDidChange, editorStateDidChange, currentEditor
+	case userDidSelectEditor
 	case contentForConsole
 	
 	func dispatch(_ info: [String:Any]? = nil) {
-		NotificationCenter.default.post(name: Notification.Name(rawValue: self.rawValue), object: nil, userInfo: info)
+		DispatchQueue.main.async {
+			NotificationCenter.default.post(name: Notification.Name(rawValue: self.rawValue), object: nil, userInfo: info)
+		}
 	}
 }

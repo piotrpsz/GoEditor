@@ -15,8 +15,9 @@ final class TextEditor: NSScrollView {
 		return true
 	}
 	
-	required init(frame frameRect: CGRect, fpath: String? = nil) {
-		super.init(frame: frameRect)
+	init(fpath: String? = nil) {
+		let rect = CGRect.zero
+		super.init(frame: rect)
 		hasVerticalScroller = true
 		hasHorizontalScroller = true
 		scrollerStyle = .overlay
@@ -25,9 +26,13 @@ final class TextEditor: NSScrollView {
 		autoresizingMask = [.width, .height]
 		autoresizesSubviews = true
 		
-		editor = EditorView(frame: frameRect, filePath: fpath)
+		editor = EditorView(frame: rect, filePath: fpath)
 		documentView = editor
 		editor.lnv_setUpLineNumberView()
+	}
+	
+	override func viewDidMoveToSuperview() {
+		frame = superview!.bounds
 	}
 	
 	required init?(coder: NSCoder) {

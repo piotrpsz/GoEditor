@@ -11,6 +11,8 @@ import Cocoa
 final class Shared {
     static private var envData: [String:String]?
 	static let appName = "GoEditor"
+	
+	
     
     static var mainPackageDirectory: String? {
         didSet {
