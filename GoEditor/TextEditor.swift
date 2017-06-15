@@ -18,6 +18,8 @@ final class TextEditor: NSScrollView {
 	init(fpath: String? = nil) {
 		let rect = CGRect.zero
 		super.init(frame: rect)
+		tr.in(self); defer { tr.out(self) }
+		
 		hasVerticalScroller = true
 		hasHorizontalScroller = true
 		scrollerStyle = .overlay
@@ -32,6 +34,7 @@ final class TextEditor: NSScrollView {
 	}
 	
 	override func viewDidMoveToSuperview() {
+		tr.in(self); defer { tr.out(self) }
 		frame = superview!.bounds
 	}
 	

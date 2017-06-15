@@ -18,6 +18,8 @@ final class EditorsContainer: NSView, EventObserver {
 		}
 		didSet {
 			if let editor = currentEditor {
+				tr.in(self); defer { tr.out(self) }
+				
 				Event.currentEditor.dispatch(["editor":currentEditor as Any])
 				editor.isHidden = false
 				window?.makeFirstResponder(editor)
@@ -27,6 +29,8 @@ final class EditorsContainer: NSView, EventObserver {
 	
 	required init() {
 		super.init(frame: CGRect.zero)
+		tr.in(self); defer { tr.out(self) }
+		
 		autoresizingMask = [.width, .height]
 		autoresizesSubviews = true
 		registerObservers()
@@ -37,17 +41,22 @@ final class EditorsContainer: NSView, EventObserver {
 	}
 	
 	deinit {
+		tr.in(self); defer { tr.out(self) }
 		removeObservers()
 	}
 	
 	func registerObservers() {
 		registerEvent(Event.userDidSelectEditor) { note in
+			tr.in(self); defer { tr.out(self) }
+			
 			if let editor = note.userInfo?["editor"] as? TextEditor {
 				self.currentEditor = editor
 			}
 		}
 		
 		registerEvent(Event.filesToOpenRequest) { note in
+			tr.in(self); defer { tr.out(self) }
+			
             if let files = note.userInfo?["files"] as? [String] {
                 for fpath in files {
 					EditorsContainer.mutex.sync {
@@ -56,24 +65,25 @@ final class EditorsContainer: NSView, EventObserver {
 						EditorsContainer.editors.append(editor)
 					}
                 }
-				
             }
 			Event.editorsContainerContentDidChange.dispatch()
 			self.currentEditor = self.subviews.last as? TextEditor
 		}
 		
 		registerEvent(Event.newFileRequest) { note in
+			tr.in(self); defer { tr.out(self) }
 			self.newEditor()
-			
 		}
 		
 		// save the current visible editor
 		registerEvent(Event.saveRequest) { _ in
+			tr.in(self); defer { tr.out(self) }
 			self.currentEditor?.editor.save()
 		}
 		
 		// save all wditors
 		registerEvent(Event.saveAllRequest) { note in
+			tr.in(self); defer { tr.out(self) }
 			EditorsContainer.editors.forEach {
 				$0.editor.save()
 			}
@@ -81,6 +91,7 @@ final class EditorsContainer: NSView, EventObserver {
 	}
 	
 	func newEditor() {
+		tr.in(self); defer { tr.out(self) }
 		let editor = TextEditor()
 		self.addSubview(editor)
 		EditorsContainer.mutex.sync {

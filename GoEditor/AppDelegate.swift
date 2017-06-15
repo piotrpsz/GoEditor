@@ -8,6 +8,8 @@
 
 import Cocoa
 
+let tr = Tracer()
+
 enum OpenIndex: Int {
 	case openMainPackageDirectory, openFile
 }
@@ -21,6 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
     @IBOutlet weak var window: NSWindow!
 	@IBOutlet weak var openSegmentedControl: NSSegmentedControl!
 	@IBOutlet weak var actionSegmentedControl: NSSegmentedControl!
+	@IBOutlet weak var pathOfTheFile: NSTextField!
 	private var viewController: NSViewController!
 	var observers: [NSObjectProtocol] = []
 
@@ -53,6 +56,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
             self.actionSegmentedControl.setEnabled(isKnown, forSegment: 0)
             self.actionSegmentedControl.setEnabled(isKnown, forSegment: 1)
         }
+		
+		registerEvent(Event.currentEditor) { note in
+			if let editor = note.userInfo?["editor"] as? TextEditor {
+				self.pathOfTheFile.stringValue = editor.editor.filePath
+			}
+		}
     }
     
 	func applicationDidBecomeActive(_ notification: Notification) {
