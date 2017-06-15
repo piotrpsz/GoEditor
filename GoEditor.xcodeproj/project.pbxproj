@@ -15,6 +15,7 @@
 		AE2CC2001EE15D740093610E /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2CC1FF1EE15D740093610E /* Shared.swift */; };
 		AE411B591EF16DA700828FE6 /* Mutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECC6C9F1EF16D0400386C73 /* Mutex.swift */; };
 		AE5D18DA1EDCADC700A1505E /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5D18D91EDCADC700A1505E /* ProjectView.swift */; };
+		AE738FBD1EF2C1EC00B0889A /* Tracer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE738FBC1EF2C1EC00B0889A /* Tracer.swift */; };
 		AEA96D0E1EDFFC7800D1C674 /* GoTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA96D0D1EDFFC7800D1C674 /* GoTool.swift */; };
 		AEA96D3E1EE000A700D1C674 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AEA96D3D1EE000A700D1C674 /* libsqlite3.tbd */; };
 		AEA96D471EE0A32800D1C674 /* WindowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA96D461EE0A32800D1C674 /* WindowViewController.swift */; };
@@ -61,6 +62,7 @@
 		AE29D6911EE18B6600114EFD /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		AE2CC1FF1EE15D740093610E /* Shared.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 		AE5D18D91EDCADC700A1505E /* ProjectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
+		AE738FBC1EF2C1EC00B0889A /* Tracer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracer.swift; sourceTree = "<group>"; };
 		AEA96D0D1EDFFC7800D1C674 /* GoTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoTool.swift; sourceTree = "<group>"; };
 		AEA96D3D1EE000A700D1C674 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		AEA96D461EE0A32800D1C674 /* WindowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowViewController.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 				AEC31F2D1EDC6FC400C8A3CB /* EventObserver.swift */,
 				AEA96D0D1EDFFC7800D1C674 /* GoTool.swift */,
 				AE2CC1FF1EE15D740093610E /* Shared.swift */,
+				AE738FBC1EF2C1EC00B0889A /* Tracer.swift */,
 				AECC6C9F1EF16D0400386C73 /* Mutex.swift */,
 				AE29D6911EE18B6600114EFD /* Extensions.swift */,
 				AEB9BDE91E9A406A0094920B /* Assets.xcassets */,
@@ -360,6 +363,7 @@
 				AEC31F251EDC659000C8A3CB /* MainSplitView.swift in Sources */,
 				AEAA524C1EEAB55E005AC733 /* MainPackageView.swift in Sources */,
 				AEA96D471EE0A32800D1C674 /* WindowViewController.swift in Sources */,
+				AE738FBD1EF2C1EC00B0889A /* Tracer.swift in Sources */,
 				AEC31F2B1EDC676300C8A3CB /* ConsoleView.swift in Sources */,
 				AE29D6921EE18B6600114EFD /* Extensions.swift in Sources */,
 				AEAA524E1EEAB577005AC733 /* OpenFilesView.swift in Sources */,

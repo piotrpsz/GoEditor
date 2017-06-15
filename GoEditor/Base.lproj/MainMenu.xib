@@ -17,6 +17,7 @@
             <connections>
                 <outlet property="actionSegmentedControl" destination="mt0-j1-Oc0" id="JZJ-Cl-AJ4"/>
                 <outlet property="openSegmentedControl" destination="sxz-3I-m7i" id="7zd-8e-HOL"/>
+                <outlet property="pathOfTheFile" destination="U10-Nb-i9Y" id="LQ8-me-iXf"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -737,15 +738,31 @@
                             </connections>
                         </segmentedControl>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="AB835182-16FB-4B8F-842B-20E8EE869D9C" label="Custom View" paletteLabel="Custom View" id="Un0-G5-6a0">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="38" height="17"/>
+                        <size key="maxSize" width="46" height="17"/>
+                        <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="U10-Nb-i9Y">
+                            <rect key="frame" x="15" y="14" width="46" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="123456789012345678901234567890123456789012345678901234567890" id="9s1-Ao-hs6">
+                                <font key="font" metaFont="system" size="11"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="Wpl-Mv-2oH"/>
+                    <toolbarItem reference="Ayl-Eq-cFi"/>
+                    <toolbarItem reference="Un0-G5-6a0"/>
                     <toolbarItem reference="Ayl-Eq-cFi"/>
                     <toolbarItem reference="Mra-8S-d0t"/>
                 </defaultToolbarItems>
             </toolbar>
             <contentBorderThickness minY="25"/>
-            <point key="canvasLocation" x="62" y="-387"/>
+            <point key="canvasLocation" x="-146" y="-596"/>
         </window>
     </objects>
 </document>

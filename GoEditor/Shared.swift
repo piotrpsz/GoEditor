@@ -84,4 +84,32 @@ final class Shared {
 		alert.runModal()
 	}
 	
+	static func threadInfo() -> String {
+		var number, name: String?
+		let info: String = "\(Thread.current)"
+		
+		if let idx0 = info.range(of: "{")?.upperBound {
+			if let idx1 = info.range(of: "}")?.lowerBound {
+				let string = String(info[idx0..<idx1])
+				let token = string.components(separatedBy: ",")
+				for item in token {
+					let keyAndValue = item.components(separatedBy: "=")
+					if keyAndValue.count == 2 {
+						let key   = keyAndValue[0].trimmingCharacters(in: CharacterSet.whitespaces)
+						let value = keyAndValue[1].trimmingCharacters(in: CharacterSet.whitespaces)
+						if key == "number" {
+							number = value
+						}
+						else if key == "name" {
+							name = value
+						}
+					}
+				}
+			}
+		}
+		let marker = (name == "main") ? "m" : ""
+		return "\(number!)\(marker)"
+	}
+	
+	
 }

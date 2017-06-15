@@ -29,6 +29,8 @@ class OpenFilesView: NSView, EventObserver {
 	
 	override init(frame frameRect: NSRect) {
 		super.init(frame: frameRect)
+		tr.in(self); defer { tr.out(self) }
+		
 		autoresizingMask = [.width, .height]
 		autoresizesSubviews = true
 		tableView.delegate = self
@@ -43,15 +45,28 @@ class OpenFilesView: NSView, EventObserver {
 	}
 	
 	deinit {
+		tr.in(self); defer { tr.out(self) }
 		removeObservers()
 	}
 	
 	func registerObservers() {
 		registerEvent(Event.editorsContainerContentDidChange) { note in
+			tr.in(self); defer { tr.out(self) }
+			tr.info(self, "event: \(Event.editorsContainerContentDidChange)")
+			self.tableView.reloadData()
+		}
+		
+		registerEvent(Event.editorStateDidChange) { note in
+			tr.in(self); defer { tr.out(self) }
+			tr.info(self, "event: \(Event.editorStateDidChange)")
+			
 			self.tableView.reloadData()
 		}
 		
 		registerEvent(Event.currentEditor) { note in
+			tr.in(self); defer { tr.out(self) }
+			tr.info(self, "event: \(Event.currentEditor)")
+			
 			if let editor = note.userInfo?["editor"] as? TextEditor {
 				var index: Int?
 				EditorsContainer.mutex.sync {
@@ -74,6 +89,7 @@ extension OpenFilesView: NSTableViewDelegate {
 		guard tableView.onReload == false else {
 			return
 		}
+		tr.in(self); defer { tr.out(self) }
 		var editor: TextEditor?
 		EditorsContainer.mutex.sync {
 			editor = EditorsContainer.editors[self.tableView.selectedRow]
@@ -82,6 +98,8 @@ extension OpenFilesView: NSTableViewDelegate {
 	}
 	
 	func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+		tr.in(self); defer { tr.out(self) }
+		
 		var rowView = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("OpenFilesRowView"), owner: nil) as? OpenFilesRowView
 		if rowView == nil {
 			rowView = OpenFilesRowView()
@@ -91,6 +109,8 @@ extension OpenFilesView: NSTableViewDelegate {
 	}
 	
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+		tr.in(self); defer { tr.out(self) }
+		
 		var cellView = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("OpenFilesCellView"), owner: nil) as? OpenFilesCellView
 		if cellView == nil {
 			cellView = OpenFilesCellView()
@@ -104,11 +124,16 @@ extension OpenFilesView: NSTableViewDelegate {
 extension OpenFilesView: NSTableViewDataSource {
 	
 	func numberOfRows(in tableView: NSTableView) -> Int {
+		tr.in(self); defer { tr.out(self) }
+		
 		let n = EditorsContainer.editors.count
+		tr.info(self, "rows number: \(n)")
 		return n
 	}
 	
 	func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
+		tr.in(self); defer { tr.out(self) }
+		
 		guard (row >= 0) && (row < EditorsContainer.editors.count) else {
 			return nil
 		}
