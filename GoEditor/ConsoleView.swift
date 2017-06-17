@@ -50,6 +50,10 @@ class ConsoleView: NSTextView, EventObserver {
     }
     
     func registerObservers() {
+		registerEvent(Event.runRequest) { note in
+			self.setNewContent(string: "")
+		}
+		
         registerEvent(Event.runDidFinish) { note in
             if let text = note.userInfo?["text"] as? String {
                 self.textStorage?.append(NSAttributedString(string: text))

@@ -8,104 +8,70 @@
 
 import Cocoa
 
-class OpenFilesTableView: NSTableView {
-	private let customRowHeight = CGFloat(25.0)
-	private var rowWhenSelectedSubmenu: Int?
+class OpenFilesTableView: TableView {
 	private let column: NSTableColumn = {
 		let col = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("data"))
 		col.isEditable = false
 		return col
 	}()
-	var onReload = false
 	
 	override init(frame frameRect: NSRect) {
 		super.init(frame: frameRect)
-		autoresizesSubviews = true
-		autoresizingMask = [.width, .height]
-		backgroundColor = NSColor(calibratedWhite: 0.5, alpha: 0.0)
-		allowsColumnResizing = false
-		allowsColumnReordering = false
-		allowsMultipleSelection = false
-		allowsEmptySelection = false
-		allowsColumnSelection = false
-		floatsGroupRows = true
-		headerView = nil
-		rowHeight = customRowHeight
-		selectionHighlightStyle = .none
 		addTableColumn(column)
+		delegate = self
+		dataSource = self
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+}
+
+extension OpenFilesTableView: NSTableViewDelegate {
 	
-	override func reloadData() {
-		let index = selectedRow
-		onReload = true
-		super.reloadData()
-		selectRow(at: index)
-		onReload = false
-	}
-	
-	override func rightMouseDown(with event: NSEvent) {
-		guard !onReload else {
-			return
-		}
-		tr.in(self); defer { tr.out(self)}
-		
-		let point = convert(event.locationInWindow, to: nil)
-		if let rowIndex = indexOfRowContainedPoint(point: point) {
-			if let editor = EditorsContainer.editors[rowIndex].editor {
-				tr.info(self, "index: \(rowIndex), path: \(editor.filePath)")
-				let menu = NSMenu()
-				if editor.isChanged {
-					menu.addItem(withTitle: "Save", action: #selector(saveDidSelectInContextMenu(_:)), keyEquivalent: "")
-				}
-				menu.addItem(withTitle: "Close", action: #selector(closeDidSelectInContextMenu(_:)), keyEquivalent: "")
-				menu.addItem(withTitle: "Rename", action: #selector(renameDidSelectInContextMenu(_:)), keyEquivalent: "")
-				menu.addItem(withTitle: "Delete", action: #selector(deleteDidSelectInContextMenu(_:)), keyEquivalent: "")
-				NSMenu.popUpContextMenu(menu, with: event, for: self)
+	func tableViewSelectionDidChange(_ notification: Notification) {
+		if !onReload {
+			var editor: TextEditor?
+			EditorsContainer.mutex.sync {
+				editor = EditorsContainer.editors[self.selectedRow]
 			}
+			Event.userDidSelectEditor.dispatch(["editor":editor as Any])
 		}
 	}
 	
-	@objc func saveDidSelectInContextMenu(_ sender: Any?) {
-		
-	}
-	
-	@objc func closeDidSelectInContextMenu(_ sender: Any?) {
-		
-	}
-	
-	@objc func renameDidSelectInContextMenu(_ sender: Any?) {
-		
-	}
-	
-	@objc func deleteDidSelectInContextMenu(_ sender: Any?) {
-		
-	}
-	
-	private func indexOfRowContainedPoint(point: CGPoint) -> Int? {
-		var index: Int? = nil
-		enumerateAvailableRowViews { (rowView, rowIndex) in
-			let yt = rowView.frame.origin.y
-			let yb = yt + rowView.frame.size.height
-			if (yb >= point.y) && (point.y >= yt) {
-				index = rowIndex
-				return
-			}
+	func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+		var rowView = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("OpenFilesRowView"), owner: nil) as? OpenFilesRowView
+		if rowView == nil {
+			rowView = OpenFilesRowView()
+			rowView?.identifier = NSUserInterfaceItemIdentifier("OpenFilesRowView")
 		}
-		return index
+		return rowView
 	}
 	
-	
-	func selectRow(at index: Int?) {
-		guard let index = index else {
-			return
+	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+		var cellView = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("OpenFilesCellView"), owner: nil) as? OpenFilesCellView
+		if cellView == nil {
+			cellView = OpenFilesCellView()
+			cellView?.identifier = NSUserInterfaceItemIdentifier("OpenFilesCellView")
 		}
-		self.selectRowIndexes(IndexSet(integer: index), byExtendingSelection: false)
-		self.scrollRowToVisible(index)
+		cellView?.objectValue = EditorsContainer.editors[row]
+		return cellView
+	}
+}
+
+
+
+extension OpenFilesTableView: NSTableViewDataSource {
+	
+	func numberOfRows(in tableView: NSTableView) -> Int {
+		let n = EditorsContainer.editors.count
+		return n
 	}
 	
-	
+	func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
+		guard (row >= 0) && (row < EditorsContainer.editors.count) else {
+			return nil
+		}
+		return EditorsContainer.editors[row]
+	}
 }

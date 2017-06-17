@@ -47,16 +47,12 @@ final class EditorsContainer: NSView, EventObserver {
 	
 	func registerObservers() {
 		registerEvent(Event.userDidSelectEditor) { note in
-			tr.in(self); defer { tr.out(self) }
-			
 			if let editor = note.userInfo?["editor"] as? TextEditor {
 				self.currentEditor = editor
 			}
 		}
 		
 		registerEvent(Event.filesToOpenRequest) { note in
-			tr.in(self); defer { tr.out(self) }
-			
             if let files = note.userInfo?["files"] as? [String] {
                 for fpath in files {
 					EditorsContainer.mutex.sync {
@@ -71,19 +67,16 @@ final class EditorsContainer: NSView, EventObserver {
 		}
 		
 		registerEvent(Event.newFileRequest) { note in
-			tr.in(self); defer { tr.out(self) }
 			self.newEditor()
 		}
 		
 		// save the current visible editor
 		registerEvent(Event.saveRequest) { _ in
-			tr.in(self); defer { tr.out(self) }
 			self.currentEditor?.editor.save()
 		}
 		
 		// save all wditors
 		registerEvent(Event.saveAllRequest) { note in
-			tr.in(self); defer { tr.out(self) }
 			EditorsContainer.editors.forEach {
 				$0.editor.save()
 			}
@@ -91,7 +84,6 @@ final class EditorsContainer: NSView, EventObserver {
 	}
 	
 	func newEditor() {
-		tr.in(self); defer { tr.out(self) }
 		let editor = TextEditor()
 		self.addSubview(editor)
 		EditorsContainer.mutex.sync {

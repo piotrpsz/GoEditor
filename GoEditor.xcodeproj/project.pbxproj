@@ -26,6 +26,10 @@
 		AEB9BDED1E9A406A0094920B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AEB9BDEB1E9A406A0094920B /* MainMenu.xib */; };
 		AEB9BDF81E9A406A0094920B /* GoEditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB9BDF71E9A406A0094920B /* GoEditorTests.swift */; };
 		AEB9BE031E9A406A0094920B /* GoEditorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB9BE021E9A406A0094920B /* GoEditorUITests.swift */; };
+		AEBA54F61EF42D81005529B1 /* MainPackageTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBA54F51EF42D81005529B1 /* MainPackageTableView.swift */; };
+		AEBA54F81EF522C5005529B1 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBA54F71EF522C5005529B1 /* TableView.swift */; };
+		AEBA54FA1EF53180005529B1 /* MainPackageRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBA54F91EF53180005529B1 /* MainPackageRowView.swift */; };
+		AEBA54FC1EF531A3005529B1 /* MainPackageCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBA54FB1EF531A3005529B1 /* MainPackageCellView.swift */; };
 		AEC31F231EDC625000C8A3CB /* LineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC31F221EDC625000C8A3CB /* LineNumberRulerView.swift */; };
 		AEC31F251EDC659000C8A3CB /* MainSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC31F241EDC659000C8A3CB /* MainSplitView.swift */; };
 		AEC31F271EDC65A500C8A3CB /* EditorSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEC31F261EDC65A500C8A3CB /* EditorSplitView.swift */; };
@@ -79,6 +83,10 @@
 		AEB9BDFE1E9A406A0094920B /* GoEditorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GoEditorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEB9BE021E9A406A0094920B /* GoEditorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoEditorUITests.swift; sourceTree = "<group>"; };
 		AEB9BE041E9A406A0094920B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AEBA54F51EF42D81005529B1 /* MainPackageTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPackageTableView.swift; sourceTree = "<group>"; };
+		AEBA54F71EF522C5005529B1 /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
+		AEBA54F91EF53180005529B1 /* MainPackageRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPackageRowView.swift; sourceTree = "<group>"; };
+		AEBA54FB1EF531A3005529B1 /* MainPackageCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPackageCellView.swift; sourceTree = "<group>"; };
 		AEC31F221EDC625000C8A3CB /* LineNumberRulerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineNumberRulerView.swift; sourceTree = "<group>"; };
 		AEC31F241EDC659000C8A3CB /* MainSplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSplitView.swift; sourceTree = "<group>"; };
 		AEC31F261EDC65A500C8A3CB /* EditorSplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorSplitView.swift; sourceTree = "<group>"; };
@@ -127,6 +135,28 @@
 			name = "Text Editor";
 			sourceTree = "<group>";
 		};
+		AE738FBE1EF2D54900B0889A /* Main Package */ = {
+			isa = PBXGroup;
+			children = (
+				AEAA524B1EEAB55E005AC733 /* MainPackageView.swift */,
+				AEBA54F51EF42D81005529B1 /* MainPackageTableView.swift */,
+				AEBA54F91EF53180005529B1 /* MainPackageRowView.swift */,
+				AEBA54FB1EF531A3005529B1 /* MainPackageCellView.swift */,
+			);
+			name = "Main Package";
+			sourceTree = "<group>";
+		};
+		AE738FBF1EF2D56400B0889A /* Opened Files */ = {
+			isa = PBXGroup;
+			children = (
+				AEAA524D1EEAB577005AC733 /* OpenFilesView.swift */,
+				AE03DB2F1EEACD2A0057D5DE /* OpenFilesTableView.swift */,
+				AE03DB311EEAD94D0057D5DE /* OpenFilesRowView.swift */,
+				AE03DB331EEADC2D0057D5DE /* OpenFilesCellView.swift */,
+			);
+			name = "Opened Files";
+			sourceTree = "<group>";
+		};
 		AEA96D3C1EE000A700D1C674 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -139,11 +169,9 @@
 			isa = PBXGroup;
 			children = (
 				AE5D18D91EDCADC700A1505E /* ProjectView.swift */,
-				AEAA524B1EEAB55E005AC733 /* MainPackageView.swift */,
-				AEAA524D1EEAB577005AC733 /* OpenFilesView.swift */,
-				AE03DB2F1EEACD2A0057D5DE /* OpenFilesTableView.swift */,
-				AE03DB311EEAD94D0057D5DE /* OpenFilesRowView.swift */,
-				AE03DB331EEADC2D0057D5DE /* OpenFilesCellView.swift */,
+				AEBA54F71EF522C5005529B1 /* TableView.swift */,
+				AE738FBF1EF2D56400B0889A /* Opened Files */,
+				AE738FBE1EF2D54900B0889A /* Main Package */,
 			);
 			name = "Project Side Views";
 			sourceTree = "<group>";
@@ -358,23 +386,27 @@
 				AEB9BDE81E9A406A0094920B /* AppDelegate.swift in Sources */,
 				AEC6BC2B1EEEE7BD00626AAF /* EditorsContainer.swift in Sources */,
 				AEC31F271EDC65A500C8A3CB /* EditorSplitView.swift in Sources */,
+				AEBA54F81EF522C5005529B1 /* TableView.swift in Sources */,
 				AE03DB371EEAE5570057D5DE /* TextEditor.swift in Sources */,
 				AE03DB321EEAD94D0057D5DE /* OpenFilesRowView.swift in Sources */,
 				AEC31F251EDC659000C8A3CB /* MainSplitView.swift in Sources */,
 				AEAA524C1EEAB55E005AC733 /* MainPackageView.swift in Sources */,
 				AEA96D471EE0A32800D1C674 /* WindowViewController.swift in Sources */,
 				AE738FBD1EF2C1EC00B0889A /* Tracer.swift in Sources */,
+				AEBA54FA1EF53180005529B1 /* MainPackageRowView.swift in Sources */,
 				AEC31F2B1EDC676300C8A3CB /* ConsoleView.swift in Sources */,
 				AE29D6921EE18B6600114EFD /* Extensions.swift in Sources */,
 				AEAA524E1EEAB577005AC733 /* OpenFilesView.swift in Sources */,
 				AEFB1B941EEB25690053F12D /* EditOperation.swift in Sources */,
 				AE03DB301EEACD2A0057D5DE /* OpenFilesTableView.swift in Sources */,
+				AEBA54F61EF42D81005529B1 /* MainPackageTableView.swift in Sources */,
 				AE2CC2001EE15D740093610E /* Shared.swift in Sources */,
 				AE411B591EF16DA700828FE6 /* Mutex.swift in Sources */,
 				AE03DB341EEADC2D0057D5DE /* OpenFilesCellView.swift in Sources */,
 				AE5D18DA1EDCADC700A1505E /* ProjectView.swift in Sources */,
 				AEC31F2E1EDC6FC400C8A3CB /* Event.swift in Sources */,
 				AEC31F291EDC674100C8A3CB /* EditorView.swift in Sources */,
+				AEBA54FC1EF531A3005529B1 /* MainPackageCellView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

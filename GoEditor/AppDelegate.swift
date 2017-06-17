@@ -51,7 +51,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
     }
 
     func registerObservers() {
-        registerEvent(Event.mainDirectoryDidChange) { note in
+        registerEvent(Event.mainPackageDirectoryDidChange) { note in
             let isKnown = Shared.mainPackageDirectory != nil
             self.actionSegmentedControl.setEnabled(isKnown, forSegment: 0)
             self.actionSegmentedControl.setEnabled(isKnown, forSegment: 1)
@@ -184,6 +184,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
 			return
 		}
 		
+		Event.runRequest.dispatch()
 		let url = URL(fileURLWithPath: dir)
 		let fm = FileManager.default
 		
