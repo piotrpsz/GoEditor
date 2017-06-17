@@ -11,13 +11,14 @@ import Foundation
 
 enum Event: String {
 	case applicationStarted
-	case mainDirectoryDidChange
+	case mainPackageDirectoryDidChange
 	case filesToOpenRequest, newFileRequest
 	case runDidFinish
 	case saveRequest, saveAsRequest, saveAllRequest
 	case editorsContainerContentDidChange, editorStateDidChange, currentEditor
 	case userDidSelectEditor
 	case contentForConsole
+	case runRequest, buildRequest
 	
 	func dispatch(_ info: [String:Any]? = nil) {
 		DispatchQueue.main.async {

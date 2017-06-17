@@ -12,11 +12,9 @@ final class Shared {
     static private var envData: [String:String]?
 	static let appName = "GoEditor"
 	
-	
-    
     static var mainPackageDirectory: String? {
         didSet {
-            Event.mainDirectoryDidChange.dispatch()
+            Event.mainPackageDirectoryDidChange.dispatch()
         }
     }
 	static var lastOpenedFileDirectory: String?
