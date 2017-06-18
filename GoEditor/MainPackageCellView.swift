@@ -32,12 +32,22 @@ class MainPackageCellView: NSTableCellView {
 			let y = bounds.origin.y + (bounds.size.height - attrString.size().height) / 2.0
 			attrString.draw(at: CGPoint(x: x, y: y))
 			
-//			let xc = bounds.size.width - 5.0 - MainPackageCellView.radius
-//			let yc = (bounds.size.height - (2.0 * MainPackageCellView.radius)) / 2.0			
-//			let color = editor.editor.isChanged ? MainPackageCellView.changedColor : MainPackageCellView.normalColor
-//			color.setFill()
-//			NSBezierPath(ovalIn: CGRect(x: xc - MainPackageCellView.radius, y: bounds.origin.y + yc, width: 2.0 * MainPackageCellView.radius, height: 2.0 * MainPackageCellView.radius)).fill()
+			var changed: Bool? = nil
+			EditorsContainer.mutex.sync {
+				for editor in EditorsContainer.editors {
+					if editor.editor.filePath == fpath {
+						changed = editor.editor.isChanged
+					}
+				}
+			}
+			
+			if let changed = changed {
+				let xc = bounds.size.width - 5.0 - MainPackageCellView.radius
+				let yc = (bounds.size.height - (2.0 * MainPackageCellView.radius)) / 2.0
+				let color = changed ? MainPackageCellView.changedColor : MainPackageCellView.normalColor
+				color.setFill()
+				NSBezierPath(ovalIn: CGRect(x: xc - MainPackageCellView.radius, y: bounds.origin.y + yc, width: 2.0 * MainPackageCellView.radius, height: 2.0 * MainPackageCellView.radius)).fill()
+			}
 		}
 	}
-	
 }

@@ -44,6 +44,14 @@ final class MainPackageTableView: TableView, TableViewDelegate, EventObserver {
 	}
 	
 	func registerObservers() {
+		registerEvent(Event.editorsContainerContentDidChange) { note in
+			self.reloadData()
+		}
+		
+		registerEvent(Event.editorStateDidChange) { note in
+			self.reloadData()
+		}
+		
 		registerEvent(Event.mainPackageDirectoryDidChange) { note in
 			self.files = []
 			if let fpath = Shared.mainPackageDirectory {
