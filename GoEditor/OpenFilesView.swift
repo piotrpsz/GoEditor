@@ -76,16 +76,18 @@ class OpenFilesView: NSView, TableViewDelegate, EventObserver {
 		}
 	}
 	
-	func menuAt(rowIndex: Int) -> NSMenu? {
-		if let editor = EditorsContainer.editors[rowIndex].editor {
-			let menu = NSMenu()
-			if editor.isChanged {
-				menu.addItem(withTitle: "Save", action: #selector(saveDidSelectInContextMenu(_:)), keyEquivalent: "")
+	func menuAt(rowIndex: Int?) -> NSMenu? {
+		if let rowIndex = rowIndex {
+			if let editor = EditorsContainer.editors[rowIndex].editor {
+				let menu = NSMenu()
+				if editor.isChanged {
+					menu.addItem(withTitle: "Save", action: #selector(saveDidSelectInContextMenu(_:)), keyEquivalent: "")
+				}
+				menu.addItem(withTitle: "Close", action: #selector(closeDidSelectInContextMenu(_:)), keyEquivalent: "")
+				menu.addItem(withTitle: "Rename", action: #selector(renameDidSelectInContextMenu(_:)), keyEquivalent: "")
+				menu.addItem(withTitle: "Delete", action: #selector(deleteDidSelectInContextMenu(_:)), keyEquivalent: "")
+				return menu
 			}
-			menu.addItem(withTitle: "Close", action: #selector(closeDidSelectInContextMenu(_:)), keyEquivalent: "")
-			menu.addItem(withTitle: "Rename", action: #selector(renameDidSelectInContextMenu(_:)), keyEquivalent: "")
-			menu.addItem(withTitle: "Delete", action: #selector(deleteDidSelectInContextMenu(_:)), keyEquivalent: "")
-			return menu
 		}
 		return nil
 	}

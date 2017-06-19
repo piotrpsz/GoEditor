@@ -53,27 +53,52 @@ final class MainPackageTableView: TableView, TableViewDelegate, EventObserver {
 		}
 		
 		registerEvent(Event.mainPackageDirectoryDidChange) { note in
-			self.files = []
-			if let fpath = Shared.mainPackageDirectory {
-				do {
-					let array = try FileManager.default.contentsOfDirectory(atPath: fpath)
-					for item in array where item.hasSuffix(".go") {
-						let path = fpath + "/" + item
-						self.files.append(path)
-					}
-				}
-				catch let error as NSError {
-					tr.info(self, "\(error.localizedDescription)")
-				}
-			}
-			self.reloadData()
+			self.reloadContent()
 		}
 	}
-		
-	func menuAt(rowIndex: Int) -> NSMenu? {
+	
+	private func reloadContent() {
+		self.files = []
+		if let fpath = Shared.mainPackageDirectory {
+			do {
+				let array = try FileManager.default.contentsOfDirectory(atPath: fpath)
+				for item in array where item.hasSuffix(".go") {
+					let path = fpath + "/" + item
+					self.files.append(path)
+				}
+			}
+			catch let error as NSError {
+				tr.info(self, "\(error.localizedDescription)")
+			}
+		}
+		self.reloadData()
+	}
+	
+	func menuAt(rowIndex: Int?) -> NSMenu? {
+		let menu = NSMenu()
+		if rowIndex == nil {
+			if let _ = Shared.mainPackageDirectory {
+				menu.addItem(withTitle: "Create new file", action: #selector(createNewFileDidClick(_:)), keyEquivalent: "")
+				menu.addItem(withTitle: "Reload content", action: #selector(reloadContentDidClick(_:)), keyEquivalent: "")
+			} else {
+				menu.addItem(withTitle: "Select/create main package directory", action: #selector(selectDirectoryDidClick(_:)), keyEquivalent: "")
+			}
+			return menu
+		}
 		return nil
 	}
 	
+	@objc func selectDirectoryDidClick(_ sender: Any?) {
+		Event.openMainPackageDirectoryRequest.dispatch()
+	}
+	
+	@objc func createNewFileDidClick(_ sender: Any?) {
+		
+	}
+	
+	@objc func reloadContentDidClick(_ sender: Any?) {
+		self.reloadContent()
+	}
 }
 
 //####################################################################

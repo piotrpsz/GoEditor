@@ -9,7 +9,7 @@
 import Cocoa
 
 protocol TableViewDelegate: class {
-	func menuAt(rowIndex: Int) -> NSMenu?
+	func menuAt(rowIndex: Int?) -> NSMenu?
 }
 
 class TableView: NSTableView {
@@ -58,10 +58,9 @@ class TableView: NSTableView {
 			return
 		}
 		let point = convert(event.locationInWindow, to: nil)
-		if let rowIndex = indexOfRowContainedPoint(point: point) {
-			if let menu = tableViewDelegate?.menuAt(rowIndex: rowIndex) {
-				NSMenu.popUpContextMenu(menu, with: event, for: self)
-			}
+		let rowIndex = indexOfRowContainedPoint(point: point)
+		if let menu = tableViewDelegate?.menuAt(rowIndex: rowIndex) {
+			NSMenu.popUpContextMenu(menu, with: event, for: self)
 		}
 	}
 	
