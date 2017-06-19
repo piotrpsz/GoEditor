@@ -62,6 +62,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
 				self.pathOfTheFile.stringValue = editor.editor.filePath
 			}
 		}
+		
+		registerEvent(Event.openMainPackageDirectoryRequest) { note in
+			self.openMainDirectory()
+		}
     }
     
 	func applicationDidBecomeActive(_ notification: Notification) {

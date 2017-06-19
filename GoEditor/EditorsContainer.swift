@@ -18,8 +18,6 @@ final class EditorsContainer: NSView, EventObserver {
 		}
 		didSet {
 			if let editor = currentEditor {
-				tr.in(self); defer { tr.out(self) }
-				
 				Event.currentEditor.dispatch(["editor":currentEditor as Any])
 				editor.isHidden = false
 				window?.makeFirstResponder(editor)
@@ -29,8 +27,6 @@ final class EditorsContainer: NSView, EventObserver {
 	
 	required init() {
 		super.init(frame: CGRect.zero)
-		tr.in(self); defer { tr.out(self) }
-		
 		autoresizingMask = [.width, .height]
 		autoresizesSubviews = true
 		registerObservers()
@@ -41,7 +37,6 @@ final class EditorsContainer: NSView, EventObserver {
 	}
 	
 	deinit {
-		tr.in(self); defer { tr.out(self) }
 		removeObservers()
 	}
 	
@@ -91,11 +86,5 @@ final class EditorsContainer: NSView, EventObserver {
 		}
 		Event.editorsContainerContentDidChange.dispatch()
 		self.currentEditor = editor
-	}
-		
-	
-//	override func draw(_ dirtyRect: NSRect) {
-//		NSColor.purple.setFill()
-//		bounds.fill()
-//    }
+	}		
 }
