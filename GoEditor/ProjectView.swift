@@ -47,6 +47,7 @@ class ProjectView: NSView {
 		openFilesView.isHidden = true
 		selector.target = self
 		selector.action = #selector(ProjectView.selectorDidSelect(_:))
+		selector.selectedSegment = 0
     }
 	
 	required init?(coder: NSCoder) {

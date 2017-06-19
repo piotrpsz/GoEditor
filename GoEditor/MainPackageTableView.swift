@@ -121,9 +121,13 @@ extension MainPackageTableView: NSTableViewDataSource {
 	}
 	
 	func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
-		guard files.isNotEmpty else {
+		guard let _ = Shared.mainPackageDirectory else {
 			return "Unknown main package directory"
 		}
+		guard files.isNotEmpty else {
+			return "No files in main package"
+		}
+		
 		guard (row >= 0) && (row < files.count) else {
 			return nil
 		}
