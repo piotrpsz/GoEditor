@@ -57,7 +57,6 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 		}
 		
         super.init(frame: frameRect, textContainer: textContainer)
-		tr.in(self); defer { tr.out(self) }
 		
         autoresizingMask = [.width, .height]
         autoresizesSubviews = true
@@ -88,13 +87,10 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 	}
 	
 	private func updateGeometry() {
-		tr.in(self); defer { tr.out(self) }
 		frame.size.height = textStorage!.size().height + font!.pointSize
 	}
 	
 	func openFile(fpath: String) {
-		tr.in(self); defer { tr.out(self) }
-		
 		guard let string = try? String(contentsOfFile: fpath) else {
 			tr.info(self, "Can't read the file (\(fpath).")
 			return
@@ -105,7 +101,6 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 
     private func setNewContent(string: String) {
         after(0.1) {
-			tr.in(self); defer { tr.out(self) }
             self.textStorage!.replaceCharacters(in: NSRange(location: 0, length: self.textStorage!.characters.count), with: NSAttributedString(string: string))
 			self.setSelectedRange(NSMakeRange(0, 0))
             self.updateGeometry()
@@ -119,10 +114,7 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 	// Saves editor content to disk.
 	//
 	func save() {
-		tr.in(self); defer { tr.out(self) }
-		
 		guard !isEmpty && isChanged else {
-			tr.info(self, "Nothing to save")
 			return
 		}
 		
@@ -144,7 +136,6 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 				if let url = panel.url {
 					self.filePath = url.path
 					canSave = true
-					Swift.print("Save to: \(self.filePath)")
 				}
 			}
 		}
@@ -176,8 +167,6 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 //	}
 	
 	private func coloredSyntax(_ textStorage: NSTextStorage) {
-		tr.in(self); defer { tr.out(self) }
-		
 		let string = textStorage.string
 		
 		self.localEditing = true
@@ -197,7 +186,6 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 		guard !localEditing else {
 			return
 		}
-		tr.in(self); defer { tr.out(self) }
 		
 		self.coloredSyntax(textStorage)
 		editOperation = nil
@@ -221,7 +209,6 @@ extension EditorView: NSTextViewDelegate {
 		guard let textStorage = textStorage else {
 			return
 		}
-		tr.in(self); defer { tr.out(self) }
 		
 		if !isChanged {
 			isChanged = true
@@ -249,7 +236,6 @@ extension EditorView: NSTextViewDelegate {
 		guard let textStorage = textStorage, let editOperation = editOperation else {
 			return
 		}
-		tr.in(self); defer { tr.out(self) }
 		
 		var text = textStorage.string
 		var currentCursorPosition = selectedRange().location
@@ -271,7 +257,6 @@ extension EditorView: NSTextViewDelegate {
 		guard let textStorage = textStorage, let editOperation = editOperation else {
 			return
 		}
-		tr.in(self); defer { tr.out(self) }
 		
 		var text = textStorage.string
 		let currentCursorPosition = selectedRange().location
@@ -290,7 +275,6 @@ extension EditorView: NSTextViewDelegate {
 		guard let textStorage = textStorage, let editOperation = editOperation else {
 			return
 		}
-		tr.in(self); defer { tr.out(self) }
 		
 		localEditing = true
 		var text = textStorage.string
@@ -310,8 +294,6 @@ extension EditorView: NSTextViewDelegate {
 	}
 	
 	private func prefixOfLine(withIndex index: Int, text: String) -> String {
-		tr.in(self); defer { tr.out(self) }
-		
 		var prefix = ""
 		if index >= 0 && index < text.count {
 			let spaces = CharacterSet.whitespaces

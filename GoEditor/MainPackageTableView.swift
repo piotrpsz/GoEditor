@@ -44,6 +44,14 @@ final class MainPackageTableView: TableView, TableViewDelegate, EventObserver {
 	}
 	
 	func registerObservers() {
+		registerEvent(Event.editorsContainerContentDidChange) { note in
+			self.reloadData()
+		}
+		
+		registerEvent(Event.editorStateDidChange) { note in
+			self.reloadData()
+		}
+		
 		registerEvent(Event.mainPackageDirectoryDidChange) { note in
 			self.files = []
 			if let fpath = Shared.mainPackageDirectory {
@@ -113,9 +121,13 @@ extension MainPackageTableView: NSTableViewDataSource {
 	}
 	
 	func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
-		guard files.isNotEmpty else {
+		guard let _ = Shared.mainPackageDirectory else {
 			return "Unknown main package directory"
 		}
+		guard files.isNotEmpty else {
+			return "No files in main package"
+		}
+		
 		guard (row >= 0) && (row < files.count) else {
 			return nil
 		}
