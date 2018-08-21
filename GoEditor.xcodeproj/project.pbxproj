@@ -11,11 +11,35 @@
 		AE03DB321EEAD94D0057D5DE /* OpenFilesRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE03DB311EEAD94D0057D5DE /* OpenFilesRowView.swift */; };
 		AE03DB341EEADC2D0057D5DE /* OpenFilesCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE03DB331EEADC2D0057D5DE /* OpenFilesCellView.swift */; };
 		AE03DB371EEAE5570057D5DE /* TextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE03DB361EEAE5570057D5DE /* TextEditor.swift */; };
-		AE29D6921EE18B6600114EFD /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE29D6911EE18B6600114EFD /* Extensions.swift */; };
+		AE1886DC20BEE01200BF8112 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886DB20BEE01200BF8112 /* Parser.swift */; };
+		AE18870420BEE2B600BF8112 /* After.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886DF20BEE2B500BF8112 /* After.swift */; };
+		AE18870520BEE2B600BF8112 /* SQLRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886E120BEE2B500BF8112 /* SQLRecord.swift */; };
+		AE18870620BEE2B600BF8112 /* SQLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886E320BEE2B500BF8112 /* SQLite.swift */; };
+		AE18870720BEE2B600BF8112 /* QueryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886E420BEE2B500BF8112 /* QueryResult.swift */; };
+		AE18870820BEE2B600BF8112 /* SQLiteConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886E520BEE2B500BF8112 /* SQLiteConstants.swift */; };
+		AE18870920BEE2B600BF8112 /* SQLField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886E620BEE2B500BF8112 /* SQLField.swift */; };
+		AE18870A20BEE2B600BF8112 /* SQLiteStatement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886E720BEE2B500BF8112 /* SQLiteStatement.swift */; };
+		AE18870B20BEE2B600BF8112 /* RowData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886E820BEE2B500BF8112 /* RowData.swift */; };
+		AE18870C20BEE2B600BF8112 /* Date-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886EA20BEE2B500BF8112 /* Date-Extension.swift */; };
+		AE18870D20BEE2B600BF8112 /* Int-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886EB20BEE2B500BF8112 /* Int-Extension.swift */; };
+		AE18870E20BEE2B600BF8112 /* Bytes+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886EC20BEE2B500BF8112 /* Bytes+Extension.swift */; };
+		AE18870F20BEE2B600BF8112 /* Double-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886ED20BEE2B500BF8112 /* Double-Extension.swift */; };
+		AE18871020BEE2B600BF8112 /* PopUpButton-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886EE20BEE2B500BF8112 /* PopUpButton-Extension.swift */; };
+		AE18871120BEE2B600BF8112 /* Character-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886EF20BEE2B500BF8112 /* Character-Extension.swift */; };
+		AE18871220BEE2B600BF8112 /* Data-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886F020BEE2B500BF8112 /* Data-Extension.swift */; };
+		AE18871320BEE2B600BF8112 /* String-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886F120BEE2B500BF8112 /* String-Extension.swift */; };
+		AE18871420BEE2B600BF8112 /* Color-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886F220BEE2B500BF8112 /* Color-Extension.swift */; };
+		AE18871520BEE2B600BF8112 /* Array-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886F320BEE2B500BF8112 /* Array-Extension.swift */; };
+		AE18871620BEE2B600BF8112 /* Image-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886F420BEE2B500BF8112 /* Image-Extension.swift */; };
+		AE18871720BEE2B600BF8112 /* Mutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886F520BEE2B500BF8112 /* Mutex.swift */; };
+		AE18871820BEE2B600BF8112 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886F620BEE2B500BF8112 /* Matrix.swift */; };
+		AE18871920BEE2B600BF8112 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886F820BEE2B500BF8112 /* Label.swift */; };
+		AE18871A20BEE2B600BF8112 /* Quartz.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886F920BEE2B500BF8112 /* Quartz.swift */; };
+		AE18871B20BEE2B600BF8112 /* SharedTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886FA20BEE2B600BF8112 /* SharedTypes.swift */; };
+		AE18871C20BEE2B600BF8112 /* Tracer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886FB20BEE2B600BF8112 /* Tracer.swift */; };
+		AE18871D20BEE2B600BF8112 /* ToolBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1886FC20BEE2B600BF8112 /* ToolBox.swift */; };
 		AE2CC2001EE15D740093610E /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2CC1FF1EE15D740093610E /* Shared.swift */; };
-		AE411B591EF16DA700828FE6 /* Mutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECC6C9F1EF16D0400386C73 /* Mutex.swift */; };
 		AE5D18DA1EDCADC700A1505E /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5D18D91EDCADC700A1505E /* ProjectView.swift */; };
-		AE738FBD1EF2C1EC00B0889A /* Tracer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE738FBC1EF2C1EC00B0889A /* Tracer.swift */; };
 		AEA96D0E1EDFFC7800D1C674 /* GoTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA96D0D1EDFFC7800D1C674 /* GoTool.swift */; };
 		AEA96D3E1EE000A700D1C674 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AEA96D3D1EE000A700D1C674 /* libsqlite3.tbd */; };
 		AEA96D471EE0A32800D1C674 /* WindowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA96D461EE0A32800D1C674 /* WindowViewController.swift */; };
@@ -63,10 +87,37 @@
 		AE03DB311EEAD94D0057D5DE /* OpenFilesRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFilesRowView.swift; sourceTree = "<group>"; };
 		AE03DB331EEADC2D0057D5DE /* OpenFilesCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFilesCellView.swift; sourceTree = "<group>"; };
 		AE03DB361EEAE5570057D5DE /* TextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditor.swift; sourceTree = "<group>"; };
-		AE29D6911EE18B6600114EFD /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		AE0F75A920BEE67D00A4CD9F /* GoEditor-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GoEditor-Bridging-Header.h"; sourceTree = "<group>"; };
+		AE1886DB20BEE01200BF8112 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		AE1886DF20BEE2B500BF8112 /* After.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = After.swift; sourceTree = "<group>"; };
+		AE1886E120BEE2B500BF8112 /* SQLRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLRecord.swift; sourceTree = "<group>"; };
+		AE1886E220BEE2B500BF8112 /* SQLiteServer-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SQLiteServer-Bridging-Header.h"; sourceTree = "<group>"; };
+		AE1886E320BEE2B500BF8112 /* SQLite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLite.swift; sourceTree = "<group>"; };
+		AE1886E420BEE2B500BF8112 /* QueryResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryResult.swift; sourceTree = "<group>"; };
+		AE1886E520BEE2B500BF8112 /* SQLiteConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteConstants.swift; sourceTree = "<group>"; };
+		AE1886E620BEE2B500BF8112 /* SQLField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLField.swift; sourceTree = "<group>"; };
+		AE1886E720BEE2B500BF8112 /* SQLiteStatement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteStatement.swift; sourceTree = "<group>"; };
+		AE1886E820BEE2B500BF8112 /* RowData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowData.swift; sourceTree = "<group>"; };
+		AE1886EA20BEE2B500BF8112 /* Date-Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date-Extension.swift"; sourceTree = "<group>"; };
+		AE1886EB20BEE2B500BF8112 /* Int-Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int-Extension.swift"; sourceTree = "<group>"; };
+		AE1886EC20BEE2B500BF8112 /* Bytes+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bytes+Extension.swift"; sourceTree = "<group>"; };
+		AE1886ED20BEE2B500BF8112 /* Double-Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double-Extension.swift"; sourceTree = "<group>"; };
+		AE1886EE20BEE2B500BF8112 /* PopUpButton-Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PopUpButton-Extension.swift"; sourceTree = "<group>"; };
+		AE1886EF20BEE2B500BF8112 /* Character-Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Character-Extension.swift"; sourceTree = "<group>"; };
+		AE1886F020BEE2B500BF8112 /* Data-Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data-Extension.swift"; sourceTree = "<group>"; };
+		AE1886F120BEE2B500BF8112 /* String-Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String-Extension.swift"; sourceTree = "<group>"; };
+		AE1886F220BEE2B500BF8112 /* Color-Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color-Extension.swift"; sourceTree = "<group>"; };
+		AE1886F320BEE2B500BF8112 /* Array-Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array-Extension.swift"; sourceTree = "<group>"; };
+		AE1886F420BEE2B500BF8112 /* Image-Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image-Extension.swift"; sourceTree = "<group>"; };
+		AE1886F520BEE2B500BF8112 /* Mutex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mutex.swift; sourceTree = "<group>"; };
+		AE1886F620BEE2B500BF8112 /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		AE1886F820BEE2B500BF8112 /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		AE1886F920BEE2B500BF8112 /* Quartz.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Quartz.swift; sourceTree = "<group>"; };
+		AE1886FA20BEE2B600BF8112 /* SharedTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedTypes.swift; sourceTree = "<group>"; };
+		AE1886FB20BEE2B600BF8112 /* Tracer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tracer.swift; sourceTree = "<group>"; };
+		AE1886FC20BEE2B600BF8112 /* ToolBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolBox.swift; sourceTree = "<group>"; };
 		AE2CC1FF1EE15D740093610E /* Shared.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 		AE5D18D91EDCADC700A1505E /* ProjectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
-		AE738FBC1EF2C1EC00B0889A /* Tracer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracer.swift; sourceTree = "<group>"; };
 		AEA96D0D1EDFFC7800D1C674 /* GoTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoTool.swift; sourceTree = "<group>"; };
 		AEA96D3D1EE000A700D1C674 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		AEA96D461EE0A32800D1C674 /* WindowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowViewController.swift; sourceTree = "<group>"; };
@@ -95,7 +146,6 @@
 		AEC31F2C1EDC6FC400C8A3CB /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		AEC31F2D1EDC6FC400C8A3CB /* EventObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventObserver.swift; sourceTree = "<group>"; };
 		AEC6BC2A1EEEE7BD00626AAF /* EditorsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorsContainer.swift; sourceTree = "<group>"; };
-		AECC6C9F1EF16D0400386C73 /* Mutex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutex.swift; sourceTree = "<group>"; };
 		AEFB1B931EEB25690053F12D /* EditOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOperation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -133,6 +183,81 @@
 				AEFB1B931EEB25690053F12D /* EditOperation.swift */,
 			);
 			name = "Text Editor";
+			sourceTree = "<group>";
+		};
+		AE1886DA20BEDFEE00BF8112 /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				AE1886DB20BEE01200BF8112 /* Parser.swift */,
+			);
+			name = Parser;
+			sourceTree = "<group>";
+		};
+		AE1886DD20BEE2B500BF8112 /* shared */ = {
+			isa = PBXGroup;
+			children = (
+				AE1886DE20BEE2B500BF8112 /* GCD */,
+				AE1886E020BEE2B500BF8112 /* SQLite */,
+				AE1886E920BEE2B500BF8112 /* Extensions */,
+				AE1886F520BEE2B500BF8112 /* Mutex.swift */,
+				AE1886F620BEE2B500BF8112 /* Matrix.swift */,
+				AE1886F720BEE2B500BF8112 /* gui */,
+				AE1886FA20BEE2B600BF8112 /* SharedTypes.swift */,
+				AE1886FB20BEE2B600BF8112 /* Tracer.swift */,
+				AE1886FC20BEE2B600BF8112 /* ToolBox.swift */,
+			);
+			name = shared;
+			path = ../../../shared;
+			sourceTree = "<group>";
+		};
+		AE1886DE20BEE2B500BF8112 /* GCD */ = {
+			isa = PBXGroup;
+			children = (
+				AE1886DF20BEE2B500BF8112 /* After.swift */,
+			);
+			path = GCD;
+			sourceTree = "<group>";
+		};
+		AE1886E020BEE2B500BF8112 /* SQLite */ = {
+			isa = PBXGroup;
+			children = (
+				AE1886E120BEE2B500BF8112 /* SQLRecord.swift */,
+				AE1886E220BEE2B500BF8112 /* SQLiteServer-Bridging-Header.h */,
+				AE1886E320BEE2B500BF8112 /* SQLite.swift */,
+				AE1886E420BEE2B500BF8112 /* QueryResult.swift */,
+				AE1886E520BEE2B500BF8112 /* SQLiteConstants.swift */,
+				AE1886E620BEE2B500BF8112 /* SQLField.swift */,
+				AE1886E720BEE2B500BF8112 /* SQLiteStatement.swift */,
+				AE1886E820BEE2B500BF8112 /* RowData.swift */,
+			);
+			path = SQLite;
+			sourceTree = "<group>";
+		};
+		AE1886E920BEE2B500BF8112 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				AE1886EA20BEE2B500BF8112 /* Date-Extension.swift */,
+				AE1886EB20BEE2B500BF8112 /* Int-Extension.swift */,
+				AE1886EC20BEE2B500BF8112 /* Bytes+Extension.swift */,
+				AE1886ED20BEE2B500BF8112 /* Double-Extension.swift */,
+				AE1886EE20BEE2B500BF8112 /* PopUpButton-Extension.swift */,
+				AE1886EF20BEE2B500BF8112 /* Character-Extension.swift */,
+				AE1886F020BEE2B500BF8112 /* Data-Extension.swift */,
+				AE1886F120BEE2B500BF8112 /* String-Extension.swift */,
+				AE1886F220BEE2B500BF8112 /* Color-Extension.swift */,
+				AE1886F320BEE2B500BF8112 /* Array-Extension.swift */,
+				AE1886F420BEE2B500BF8112 /* Image-Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		AE1886F720BEE2B500BF8112 /* gui */ = {
+			isa = PBXGroup;
+			children = (
+				AE1886F820BEE2B500BF8112 /* Label.swift */,
+				AE1886F920BEE2B500BF8112 /* Quartz.swift */,
+			);
+			path = gui;
 			sourceTree = "<group>";
 		};
 		AE738FBE1EF2D54900B0889A /* Main Package */ = {
@@ -200,6 +325,7 @@
 		AEB9BDE61E9A406A0094920B /* GoEditor */ = {
 			isa = PBXGroup;
 			children = (
+				AE0F75A920BEE67D00A4CD9F /* GoEditor-Bridging-Header.h */,
 				AEB9BDE71E9A406A0094920B /* AppDelegate.swift */,
 				AEA96D461EE0A32800D1C674 /* WindowViewController.swift */,
 				AEC31F241EDC659000C8A3CB /* MainSplitView.swift */,
@@ -207,15 +333,14 @@
 				AEC31F221EDC625000C8A3CB /* LineNumberRulerView.swift */,
 				AEC6BC2A1EEEE7BD00626AAF /* EditorsContainer.swift */,
 				AEC31F2A1EDC676300C8A3CB /* ConsoleView.swift */,
+				AE1886DD20BEE2B500BF8112 /* shared */,
+				AE1886DA20BEDFEE00BF8112 /* Parser */,
 				AE03DB351EEAE5200057D5DE /* Text Editor */,
 				AEAA524A1EEA9B4E005AC733 /* Project Side Views */,
 				AEC31F2C1EDC6FC400C8A3CB /* Event.swift */,
 				AEC31F2D1EDC6FC400C8A3CB /* EventObserver.swift */,
 				AEA96D0D1EDFFC7800D1C674 /* GoTool.swift */,
 				AE2CC1FF1EE15D740093610E /* Shared.swift */,
-				AE738FBC1EF2C1EC00B0889A /* Tracer.swift */,
-				AECC6C9F1EF16D0400386C73 /* Mutex.swift */,
-				AE29D6911EE18B6600114EFD /* Extensions.swift */,
 				AEB9BDE91E9A406A0094920B /* Assets.xcassets */,
 				AEB9BDEB1E9A406A0094920B /* MainMenu.xib */,
 				AEB9BDEE1E9A406A0094920B /* Info.plist */,
@@ -304,13 +429,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Piotr Pszczolkowski";
 				TargetAttributes = {
 					AEB9BDE31E9A40690094920B = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = M77YJ37V8H;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 0940;
 						ProvisioningStyle = Automatic;
 					};
 					AEB9BDF21E9A406A0094920B = {
@@ -381,27 +505,51 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEA96D0E1EDFFC7800D1C674 /* GoTool.swift in Sources */,
+				AE18870720BEE2B600BF8112 /* QueryResult.swift in Sources */,
 				AEC31F2F1EDC6FC400C8A3CB /* EventObserver.swift in Sources */,
+				AE18870D20BEE2B600BF8112 /* Int-Extension.swift in Sources */,
+				AE18871B20BEE2B600BF8112 /* SharedTypes.swift in Sources */,
+				AE18871D20BEE2B600BF8112 /* ToolBox.swift in Sources */,
 				AEC31F231EDC625000C8A3CB /* LineNumberRulerView.swift in Sources */,
 				AEB9BDE81E9A406A0094920B /* AppDelegate.swift in Sources */,
+				AE18871020BEE2B600BF8112 /* PopUpButton-Extension.swift in Sources */,
 				AEC6BC2B1EEEE7BD00626AAF /* EditorsContainer.swift in Sources */,
+				AE18871920BEE2B600BF8112 /* Label.swift in Sources */,
 				AEC31F271EDC65A500C8A3CB /* EditorSplitView.swift in Sources */,
+				AE18870A20BEE2B600BF8112 /* SQLiteStatement.swift in Sources */,
 				AEBA54F81EF522C5005529B1 /* TableView.swift in Sources */,
 				AE03DB371EEAE5570057D5DE /* TextEditor.swift in Sources */,
+				AE18870B20BEE2B600BF8112 /* RowData.swift in Sources */,
+				AE18871420BEE2B600BF8112 /* Color-Extension.swift in Sources */,
+				AE18871120BEE2B600BF8112 /* Character-Extension.swift in Sources */,
+				AE18870920BEE2B600BF8112 /* SQLField.swift in Sources */,
 				AE03DB321EEAD94D0057D5DE /* OpenFilesRowView.swift in Sources */,
+				AE18871520BEE2B600BF8112 /* Array-Extension.swift in Sources */,
+				AE18870F20BEE2B600BF8112 /* Double-Extension.swift in Sources */,
+				AE18870520BEE2B600BF8112 /* SQLRecord.swift in Sources */,
+				AE18871320BEE2B600BF8112 /* String-Extension.swift in Sources */,
+				AE18871820BEE2B600BF8112 /* Matrix.swift in Sources */,
+				AE18870820BEE2B600BF8112 /* SQLiteConstants.swift in Sources */,
+				AE18870420BEE2B600BF8112 /* After.swift in Sources */,
 				AEC31F251EDC659000C8A3CB /* MainSplitView.swift in Sources */,
 				AEAA524C1EEAB55E005AC733 /* MainPackageView.swift in Sources */,
+				AE18871220BEE2B600BF8112 /* Data-Extension.swift in Sources */,
+				AE18870E20BEE2B600BF8112 /* Bytes+Extension.swift in Sources */,
+				AE18870C20BEE2B600BF8112 /* Date-Extension.swift in Sources */,
 				AEA96D471EE0A32800D1C674 /* WindowViewController.swift in Sources */,
-				AE738FBD1EF2C1EC00B0889A /* Tracer.swift in Sources */,
 				AEBA54FA1EF53180005529B1 /* MainPackageRowView.swift in Sources */,
+				AE18871A20BEE2B600BF8112 /* Quartz.swift in Sources */,
 				AEC31F2B1EDC676300C8A3CB /* ConsoleView.swift in Sources */,
-				AE29D6921EE18B6600114EFD /* Extensions.swift in Sources */,
 				AEAA524E1EEAB577005AC733 /* OpenFilesView.swift in Sources */,
 				AEFB1B941EEB25690053F12D /* EditOperation.swift in Sources */,
+				AE18870620BEE2B600BF8112 /* SQLite.swift in Sources */,
 				AE03DB301EEACD2A0057D5DE /* OpenFilesTableView.swift in Sources */,
 				AEBA54F61EF42D81005529B1 /* MainPackageTableView.swift in Sources */,
 				AE2CC2001EE15D740093610E /* Shared.swift in Sources */,
-				AE411B591EF16DA700828FE6 /* Mutex.swift in Sources */,
+				AE18871620BEE2B600BF8112 /* Image-Extension.swift in Sources */,
+				AE18871720BEE2B600BF8112 /* Mutex.swift in Sources */,
+				AE1886DC20BEE01200BF8112 /* Parser.swift in Sources */,
+				AE18871C20BEE2B600BF8112 /* Tracer.swift in Sources */,
 				AE03DB341EEADC2D0057D5DE /* OpenFilesCellView.swift in Sources */,
 				AE5D18DA1EDCADC700A1505E /* ProjectView.swift in Sources */,
 				AEC31F2E1EDC6FC400C8A3CB /* Event.swift in Sources */,
@@ -466,6 +614,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -473,6 +622,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -522,6 +672,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -529,6 +680,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -561,12 +713,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = M77YJ37V8H;
+				DEVELOPMENT_TEAM = N88ST69NEC;
 				INFOPLIST_FILE = GoEditor/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Mobile-Software-Lab.GoEditor";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "GoEditor/GoEditor-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 			};
@@ -576,12 +734,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = M77YJ37V8H;
+				DEVELOPMENT_TEAM = N88ST69NEC;
 				INFOPLIST_FILE = GoEditor/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Mobile-Software-Lab.GoEditor";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "GoEditor/GoEditor-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 			};

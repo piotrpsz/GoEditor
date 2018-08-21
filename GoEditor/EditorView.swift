@@ -34,7 +34,7 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 	}
 	
 	var isEmpty: Bool {
-		if let count = textStorage?.string.characters.count {
+		if let count = textStorage?.string.count {
 			return (count == 0)
 		}
 		return true
@@ -75,7 +75,7 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
         }
         // ustawienie koloru tekstu i fontu musi być po(!) dodaniu tekstu
         textColor = currentFontColor
-        font = NSFont.systemFont(ofSize: 12.0)
+        font = NSFont.monospacedDigitSystemFont(ofSize: 12.0, weight: .medium)
         
         self.textStorage?.delegate = self
         updateGeometry()
@@ -92,7 +92,7 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 	
 	func openFile(fpath: String) {
 		guard let string = try? String(contentsOfFile: fpath) else {
-			tr.info(self, "Can't read the file (\(fpath).")
+			tr.Info(self, info: "Can't read the file (\(fpath).")
 			return
 		}
         setNewContent(string: string)
@@ -167,12 +167,17 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 //	}
 	
 	private func coloredSyntax(_ textStorage: NSTextStorage) {
+		tr.In(self)
+		defer {
+			tr.Out(self)
+		}
+		
 		let string = textStorage.string
 		
 		self.localEditing = true
 		textStorage.beginEditing()
-		textStorage.addAttributes([NSAttributedStringKey.foregroundColor:self.currentFontColor], range: NSMakeRange(0, string.characters.count))
-		let matches = EditorView.keyWordsRegex.matches(in: string, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, string.characters.count))
+		textStorage.addAttributes([NSAttributedStringKey.foregroundColor:self.currentFontColor], range: NSMakeRange(0, string.count))
+		let matches = EditorView.keyWordsRegex.matches(in: string, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, string.count))
 		for match in matches {
 			textStorage.addAttributes([NSAttributedStringKey.foregroundColor:EditorView.keyColor], range: match.range)
 		}
@@ -181,22 +186,29 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 	}
 	
 	// MARK: - NSTextStorageDelegate
+	func textStorage(_ textStorage: NSTextStorage, willProcessEditing editedMask: NSTextStorageEditActions, range editedRange: NSRange, changeInLength delta: Int) {
+		tr.Info(self, info: "\(editedRange)")
+	}
 	
 	func textStorage(_ textStorage: NSTextStorage, didProcessEditing editedMask: NSTextStorageEditActions, range editedRange: NSRange, changeInLength delta: Int) {
 		guard !localEditing else {
 			return
 		}
 		
-		self.coloredSyntax(textStorage)
+		tr.In(self)
+		defer { tr.Out(self) }
+		tr.Info(self, info: "\(editedRange)")
+		//-----------------------------------
 		editOperation = nil
-		
-		if delta != -1 {
+		if delta == 1 {
 			let changedText = textStorage.attributedSubstring(from: editedRange).string
 			if changedText == "{" {
 				editOperation = EditOperation(char: "{", range: editedRange)
-			} else if changedText == "(" {
+			}
+			else if changedText == "(" {
 				editOperation = EditOperation(char: "(", range: editedRange)
-			} else if changedText == "\n" {
+			}
+			else if changedText == "\n" {
 				editOperation = EditOperation(char: "\n", range: editedRange)
 			}
 		}
@@ -209,6 +221,8 @@ extension EditorView: NSTextViewDelegate {
 		guard let textStorage = textStorage else {
 			return
 		}
+		tr.In(self)
+		defer { tr.Out(self) }
 		
 		if !isChanged {
 			isChanged = true

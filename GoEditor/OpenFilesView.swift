@@ -29,7 +29,7 @@ class OpenFilesView: NSView, TableViewDelegate, EventObserver {
 	
 	override init(frame frameRect: NSRect) {
 		super.init(frame: frameRect)
-		tr.in(self); defer { tr.out(self) }
+		tr.In(self); defer { tr.Out(self) }
 		
 		autoresizingMask = [.width, .height]
 		autoresizesSubviews = true
@@ -44,27 +44,33 @@ class OpenFilesView: NSView, TableViewDelegate, EventObserver {
 	}
 	
 	deinit {
-		tr.in(self); defer { tr.out(self) }
+		tr.In(self)
+		defer { tr.Out(self) }
+		
 		removeObservers()
 	}
 	
 	func registerObservers() {
 		registerEvent(Event.editorsContainerContentDidChange) { note in
-			tr.in(self); defer { tr.out(self) }
-			tr.info(self, "event: \(Event.editorsContainerContentDidChange)")
+			tr.In(self)
+			defer { tr.Out(self) }
+			
+			tr.Info(self, info: "event: \(Event.editorsContainerContentDidChange)")
 			self.tableView.reloadData()
 		}
 		
 		registerEvent(Event.editorStateDidChange) { note in
-			tr.in(self); defer { tr.out(self) }
-			tr.info(self, "event: \(Event.editorStateDidChange)")
+			tr.In(self)
+			defer { tr.Out(self) }
+			tr.Info(self, info: "event: \(Event.editorStateDidChange)")
 			
 			self.tableView.reloadData()
 		}
 		
 		registerEvent(Event.currentEditor) { note in
-			tr.in(self); defer { tr.out(self) }
-			tr.info(self, "event: \(Event.currentEditor)")
+			tr.In(self)
+			defer { tr.Out(self) }
+			tr.Info(self, info: "event: \(Event.currentEditor)")
 			
 			if let editor = note.userInfo?["editor"] as? TextEditor {
 				var index: Int?

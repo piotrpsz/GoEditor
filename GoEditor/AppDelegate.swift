@@ -9,6 +9,7 @@
 import Cocoa
 
 let tr = Tracer()
+//let sqlm = SQLite.shared
 
 enum OpenIndex: Int {
 	case openMainPackageDirectory, openFile
@@ -32,7 +33,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
     }
     
 	func applicationWillFinishLaunching(_ notification: Notification) {
-        _ = Shared.environment()
+		let txt = "ABCx"
+		let c = txt[txt.index(before: txt.endIndex)]
+		print(c)
+		
+		
+		Shared.lastOpenedFileDirectory = UserDefaults.standard.string(forKey: "LastOpenedFileDirectory")
+		
+//        _ = Shared.environment()
+//		GoTool.installedPackages()
 		
 		let rect = window.contentView!.frame
 		let mainSplitView = MainSplitView(frame: rect)
@@ -72,7 +81,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
 	}
 	
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
     }
 
 	func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -170,9 +178,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, EventObserver {
 		panel.begin { retv in
 			if retv.rawValue == NSFileHandlingPanelOKButton {
 				let urls = panel.urls
-				if urls.isNotEmpty {
+				if urls.count > 0 {
 					let files = urls.map { $0.path }
-					Shared.lastOpenedFileDirectory = files[0].withoutLastPathComponent().withoutLastPathComponent()
+					
+					Shared.lastOpenedFileDirectory = files[0].withoutLastPathComponent()
 					Event.filesToOpenRequest.dispatch(["files":files as AnyObject])
 				}
 			}

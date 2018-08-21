@@ -52,6 +52,14 @@ final class EditorsContainer: NSView, EventObserver {
                 for fpath in files {
 					EditorsContainer.mutex.sync {
 						let editor = TextEditor(fpath: fpath)
+						//------------------------------------------
+						let parser = Parser(fpath: fpath)
+						parser.run()
+						for item in parser.tokens {
+							print(item.name)
+						}
+						exit(0)
+						//-----------------------------------
 						self.addSubview(editor)
 						EditorsContainer.editors.append(editor)
 					}
