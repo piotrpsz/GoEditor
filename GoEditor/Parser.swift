@@ -161,14 +161,8 @@ final class Parser {
 			}
 			
 			if isLiteralCharacter(c) {
-				let (items, pos) = parseLiteral(from: index)
-				if items != nil {
-//					print("Items count for literal: \(items!.count)")
-					tokens.append(contentsOf: items!)
-				}
-				else {
-					print("Items of literal is nil")
-				}
+				let (literalTokens, pos) = parseLiteral(from: index)
+				tokens.append(contentsOf: literalTokens)
 				index = pos
 				continue
 			}
@@ -190,7 +184,7 @@ final class Parser {
 
 extension Parser {
 	
-	private func parseLiteral(from idx: String.Index) -> ([Token]?, String.Index) {
+	private func parseLiteral(from idx: String.Index) -> ([Token], String.Index) {
 		var indexes: [Index2] = []
 		var pos = idx
 		var startPos = pos
@@ -213,7 +207,7 @@ extension Parser {
 			break
 		}
 		
-		var tokens: [Token] = []
+		var literalTokens: [Token] = []
 		
 		if indexes.count == 1 {
 			let poss = indexes.first!
@@ -226,16 +220,21 @@ extension Parser {
 				type = .basicType
 			}
 			let token = Token(name: content, pos: Position(text, idx, pos), type: type)
-			tokens.append(token)
+			literalTokens.append(token)
 		}
 		else {
+			let poss = indexes.removeFirst()
+			let content = String(text[poss.idx0..<poss.idx1])
+			let token = Token(name: content, pos: Position(text, poss.idx0, poss.idx1), type: .objectName)
+			literalTokens.append(token)
+			
 			for poss in indexes {
 				let content = String(text[poss.idx0..<poss.idx1])
-				let token = Token(name: content, pos: Position(text, poss.idx0, poss.idx1), type: .unknownType)
-				tokens.append(token)
+				let token = Token(name: content, pos: Position(text, poss.idx0, poss.idx1), type: .objectMember)
+				literalTokens.append(token)
 			}
 		}
-		return ((tokens.isEmpty ? nil : tokens), pos)
+		return (literalTokens, pos)
 	}
 	
 	private func parseNumber(from idx: String.Index) -> Token? {
