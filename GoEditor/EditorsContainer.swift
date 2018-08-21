@@ -56,7 +56,7 @@ final class EditorsContainer: NSView, EventObserver {
 						let parser = Parser(fpath: fpath)
 						parser.run()
 						for item in parser.tokens {
-							print(item.name)
+							print(item)
 						}
 						exit(0)
 						//-----------------------------------
