@@ -40,7 +40,7 @@ private let arithmeticOperators: Set = ["+", "-", "*", "/", "%", "++", "--"]
 private let relationalOperators: Set = ["==", "!=", ">", "<", ">=", "<="]
 private let logicalOperators: Set = ["&&", "||", "!"]
 private let bitwiseOperators: Set = ["&", "|", "^", "<<", ">>"]
-private let assigmentOperators: Set = ["=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "^=", "|="]
+private let assigmentOperators: Set = ["=", ":=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "^=", "|="]
 private let separators: Set = [" ", "\n", "\t", ",", "(", ")", "[", "]"]
 
 
@@ -82,6 +82,10 @@ struct Position: CustomStringConvertible {
 			return "(offset: \(offset), len: \(len))"
 		}
 	}
+	
+	func range() -> NSRange {
+		return NSMakeRange(offset, len)
+	}
 }
 
 struct Token: CustomStringConvertible {
@@ -98,7 +102,6 @@ struct Token: CustomStringConvertible {
 
 
 final class Parser {
-	
 	private let a = Character("a")
 	private let A = Character("A")
 	private let z = Character("z")
@@ -119,12 +122,14 @@ final class Parser {
 	
 	var tokens: [Token] = []
 	
-	required init(fpath: String) {
+	init(fpath: String) {
 		self.text = try! String(contentsOfFile: fpath)
 	}
+	init(text: String) {
+		self.text = text
+	}
 	
-	
-	func run() {
+	func run() -> Parser {
 		var index = skipSeparators(from: text.startIndex)
 		while index < text.endIndex {
 			let c = text[index]
@@ -135,14 +140,14 @@ final class Parser {
 				if nextIndex < text.endIndex {
 					let cc = text[nextIndex]
 					if cc == Slash {
-						if let token = skipCommentC(from: index) {
+						if let token = parseCommentCpp(from: index) {
 							tokens.append(token)
 							index = text.index(index, offsetBy: token.pos.len)
 							continue
 						}
 					}
 					else if cc == Asterisk {
-						if let token = skipCommentCpp(from: index) {
+						if let token = parseCommentC(from: index) {
 							tokens.append(token)
 							index = text.index(index, offsetBy: token.pos.len + 1)
 							continue
@@ -153,7 +158,7 @@ final class Parser {
 			
 			// omijamy łańuchy tekstowe
 			if c == Quotation {
-				if let token = skipString(from: index) {
+				if let token = parseString(from: index) {
 					tokens.append(token)
 					index = text.index(index, offsetBy: token.pos.len + 1)
 					continue
@@ -162,7 +167,11 @@ final class Parser {
 			
 			if isLiteralCharacter(c) {
 				let (literalTokens, pos) = parseLiteral(from: index)
-				tokens.append(contentsOf: literalTokens)
+				for item in literalTokens {
+					if item.type != .unknownType {
+						tokens.append(item)
+					}
+				}
 				index = pos
 				continue
 			}
@@ -175,15 +184,47 @@ final class Parser {
 				}
 			}
 			
-			index = text.index(after: index)
+			let token = parseOperation(from: index)
+			if token.type != .unknownType {
+				tokens.append(token)
+			}
+			index = text.index(index, offsetBy: token.pos.len + 1)
 		}
-		print("STOP \(tokens.count)")
+		return self
 	}
 }
 
 
 extension Parser {
 	
+	///
+	/// parseOperation
+	///
+	private func parseOperation(from idx: String.Index) -> Token {
+		var pos = idx
+		while pos < text.endIndex {
+			let c = text[pos]
+			if isSeparator(c: c) || isDigit(c) || isLiteralCharacter(c) {
+				let content = String(text[idx..<pos])
+				var type = ItemType.unknownType
+				if	arithmeticOperators.contains(content) ||
+					relationalOperators.contains(content) ||
+					logicalOperators.contains(content)    ||
+					bitwiseOperators.contains(content)    ||
+					assigmentOperators.contains(content)
+				{
+					type = .operation
+				}
+				return Token(name: content, pos: Position(text, idx, pos), type: type)
+			}
+			pos = text.index(after: pos)
+		}
+		return Token(name: "", pos: Position(text, idx, pos), type: .unknownType)
+	}
+	
+	///
+	/// parseLiteral
+	///
 	private func parseLiteral(from idx: String.Index) -> ([Token], String.Index) {
 		var indexes: [Index2] = []
 		var pos = idx
@@ -223,37 +264,46 @@ extension Parser {
 			literalTokens.append(token)
 		}
 		else {
-			let poss = indexes.removeFirst()
-			let content = String(text[poss.idx0..<poss.idx1])
-			let token = Token(name: content, pos: Position(text, poss.idx0, poss.idx1), type: .objectName)
-			literalTokens.append(token)
+			let lastPoss = indexes.removeLast()
 			
 			for poss in indexes {
 				let content = String(text[poss.idx0..<poss.idx1])
-				let token = Token(name: content, pos: Position(text, poss.idx0, poss.idx1), type: .objectMember)
+				let token = Token(name: content, pos: Position(text, poss.idx0, poss.idx1), type: .objectName)
 				literalTokens.append(token)
 			}
+			let content = String(text[lastPoss.idx0..<lastPoss.idx1])
+			let token = Token(name: content, pos: Position(text, lastPoss.idx0, lastPoss.idx1), type: .objectMember)
+			literalTokens.append(token)
+
 		}
 		return (literalTokens, pos)
 	}
 	
+	///
+	/// parserNumber
+	///
 	private func parseNumber(from idx: String.Index) -> Token? {
 		var pos = text.index(after: idx)
 		while pos < text.endIndex {
 			if !isNumberCharacter(text[pos]) {
-				return Token(name: String(text[idx..<pos]), pos: Position(text, idx, pos), type: ItemType.intValue)
+				let content = String(text[idx..<pos])
+				let decimalPointExists = content.contains(DecimalPoint)
+				return Token(name: content, pos: Position(text, idx, pos), type: decimalPointExists ? ItemType.floatValue : ItemType.intValue)
 			}
 			pos = text.index(after: pos)
 		}
 		return nil
 	}
 	
-	private func skipString(from idx: String.Index) -> Token? {
+	///
+	/// parseString
+	///
+	private func parseString(from idx: String.Index) -> Token? {
 		var pos = text.index(after: idx)
 		while pos < text.endIndex {
 			if text[pos] == Quotation {
 				if text[text.index(before: pos)] != Backslash {
-					return Token(name: String(text[idx...pos]), pos: Position(text, idx, pos), type: ItemType.stringValue)
+					return Token(name: String(text[idx...pos]), pos: Position(text, idx, text.index(after: pos)), type: ItemType.stringValue)
 				}
 			}
 			pos = text.index(after: pos)
@@ -261,25 +311,31 @@ extension Parser {
 		return nil
 	}
 	
-	private func skipCommentC(from idx: String.Index) -> Token? {
+	///
+	/// parseCommentCpp
+	///
+	private func parseCommentCpp(from idx: String.Index) -> Token? {
 		var pos = idx
 		while pos < text.endIndex {
 			if text[pos] == NewLine {
-				return Token(name: String(text[idx..<pos]), pos: Position(text, idx, pos), type: ItemType.commentC)
+				return Token(name: String(text[idx..<pos]), pos: Position(text, idx, pos), type: ItemType.commentCpp)
 			}
 			pos = text.index(after: pos)
 		}
 		return nil
 	}
 	
-	private func skipCommentCpp(from idx: String.Index) -> Token? {
+	///
+	/// parseCommentC
+	///
+	private func parseCommentC(from idx: String.Index) -> Token? {
 		var pos = text.index(idx, offsetBy: 2)
 		while pos < text.endIndex {
 			if text[pos] == Asterisk {
 				let nextPos = text.index(after: pos)
 				if nextPos < text.endIndex {
 					if text[nextPos] == Slash {
-						return Token(name: String(text[idx...nextPos]), pos: Position(text, idx, nextPos), type: ItemType.commentCpp)
+						return Token(name: String(text[idx...nextPos]), pos: Position(text, idx, nextPos), type: ItemType.commentC)
 					}
 				}
 			}

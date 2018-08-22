@@ -12,7 +12,19 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 	static private let initialFileName = "Unknown.go"
 	static fileprivate let keyWords = "break|default|func|interface|select|case|defer|go|map|struct|chan|else|goto|package|switch|const|fallthrough|if|range|type|continue|for|import|return|var"
 	static fileprivate let keyWordsRegex = try! NSRegularExpression(pattern: "\\b(\(EditorView.keyWords))\\b", options: [])
-	static fileprivate let keyColor = NSColor(calibratedRed: 1.0, green: 0.2, blue: 0.3, alpha: 0.9)
+	
+	static private let colorKey        = NSColor(calibratedRed: 1.0, green: 0.2, blue: 0.3, alpha: 0.9)
+	static private let colorCommentC   = NSColor(calibratedWhite: 0.4, alpha: 0.9)
+	static private let colorCommentCpp = NSColor(calibratedWhite: 0.6, alpha: 0.9)
+	static private let colorString     = NSColor(calibratedRed: 1.0, green: 0.0, blue: 0.0, alpha: 0.9)
+	static private let colorInt        = NSColor(calibratedRed: 0.6, green: 1.0, blue: 0.2, alpha: 0.9)
+	static private let colorFloat      = NSColor(calibratedRed: 0.2, green: 1.0, blue: 0.6, alpha: 0.9)
+	static private let colorOfOperation = NSColor(calibratedRed: 0.6, green: 0.6, blue: 0.0, alpha: 0.9)
+	static private let colorOfType      = NSColor(calibratedRed: 0.0, green: 0.6, blue: 0.6, alpha: 0.9)
+
+	static private let colorOfObjectName   = NSColor(calibratedRed: 0.7, green: 0.4, blue: 0.7, alpha: 0.9)
+	static private let colorOfObjectMember = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.3, alpha: 0.9)
+
 	
 	private var currentFontColor = NSColor.white
 	fileprivate var editOperation: EditOperation?
@@ -167,27 +179,52 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 //	}
 	
 	private func coloredSyntax(_ textStorage: NSTextStorage) {
-		tr.In(self)
-		defer {
-			tr.Out(self)
-		}
-		
-		let string = textStorage.string
+		let text = textStorage.string
 		
 		self.localEditing = true
 		textStorage.beginEditing()
-		textStorage.addAttributes([NSAttributedStringKey.foregroundColor:self.currentFontColor], range: NSMakeRange(0, string.count))
-		let matches = EditorView.keyWordsRegex.matches(in: string, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, string.count))
-		for match in matches {
-			textStorage.addAttributes([NSAttributedStringKey.foregroundColor:EditorView.keyColor], range: match.range)
+		textStorage.addAttributes([NSAttributedStringKey.foregroundColor:self.currentFontColor], range: NSMakeRange(0, text.count))
+
+		let foundedTokens = Parser(text: text).run().tokens
+		for token in foundedTokens {
+			let range = token.pos.range()
+			switch token.type {
+			case .keyword:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorKey], range: range)
+			case .commentC:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorCommentC], range: range)
+			case .commentCpp:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorCommentCpp], range: range)
+			case .stringValue:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorString], range: range)
+			case .intValue:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorInt], range: range)
+			case .floatValue:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorFloat], range: range)
+			case .operation:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorOfOperation], range: range)
+			case .basicType:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorOfType], range: range)
+			case .objectName:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorOfObjectName], range: range)
+			case .objectMember:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorOfObjectMember], range: range)
+			default:
+				()
+			}
 		}
+		
+		
+//		let matches = EditorView.keyWordsRegex.matches(in: string, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, string.count))
+//		for match in matches {
+//			textStorage.addAttributes([NSAttributedStringKey.foregroundColor:EditorView.keyColor], range: match.range)
+//		}
 		textStorage.endEditing()
 		self.localEditing = false
 	}
 	
 	// MARK: - NSTextStorageDelegate
 	func textStorage(_ textStorage: NSTextStorage, willProcessEditing editedMask: NSTextStorageEditActions, range editedRange: NSRange, changeInLength delta: Int) {
-		tr.Info(self, info: "\(editedRange)")
 	}
 	
 	func textStorage(_ textStorage: NSTextStorage, didProcessEditing editedMask: NSTextStorageEditActions, range editedRange: NSRange, changeInLength delta: Int) {
@@ -195,10 +232,6 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 			return
 		}
 		
-		tr.In(self)
-		defer { tr.Out(self) }
-		tr.Info(self, info: "\(editedRange)")
-		//-----------------------------------
 		editOperation = nil
 		if delta == 1 {
 			let changedText = textStorage.attributedSubstring(from: editedRange).string
@@ -221,8 +254,6 @@ extension EditorView: NSTextViewDelegate {
 		guard let textStorage = textStorage else {
 			return
 		}
-		tr.In(self)
-		defer { tr.Out(self) }
 		
 		if !isChanged {
 			isChanged = true
@@ -263,7 +294,7 @@ extension EditorView: NSTextViewDelegate {
 		textStorage.replaceCharacters(in: NSMakeRange(0, textStorage.characters.count), with: text)
 		textStorage.endEditing()
 		
-		currentCursorPosition += 1 + prefixPlusIntendation.characters.count
+		currentCursorPosition += 1 + prefixPlusIntendation.count
 		setSelectedRange(NSMakeRange(currentCursorPosition, 0))
 	}
 	
