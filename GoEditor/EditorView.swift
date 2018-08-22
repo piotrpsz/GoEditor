@@ -186,7 +186,11 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 		textStorage.addAttributes([NSAttributedStringKey.foregroundColor:self.currentFontColor], range: NSMakeRange(0, text.count))
 
 		let foundedTokens = Parser(text: text).run().tokens
+		
+		// x/crypto/bcrypt
+		
 		for token in foundedTokens {
+//			print(token)
 			let range = token.pos.range()
 			switch token.type {
 			case .keyword:

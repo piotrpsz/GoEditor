@@ -35,13 +35,13 @@ private let keywords: Set = [
 	"return",
 	"var"]
 
-private let types: Set = ["bool", "string", "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16", "uint32", "uint64", "uintptr", "byte", "rune", "float32", "float64", "complex64", "complex128"]
+private let types: Set = ["error", "bool", "string", "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16", "uint32", "uint64", "uintptr", "byte", "rune", "float32", "float64", "complex64", "complex128"]
 private let arithmeticOperators: Set = ["+", "-", "*", "/", "%", "++", "--"]
 private let relationalOperators: Set = ["==", "!=", ">", "<", ">=", "<="]
 private let logicalOperators: Set = ["&&", "||", "!"]
 private let bitwiseOperators: Set = ["&", "|", "^", "<<", ">>"]
 private let assigmentOperators: Set = ["=", ":=", "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "^=", "|="]
-private let separators: Set = [" ", "\n", "\t", ",", "(", ")", "[", "]"]
+private let separators: Set = [" ", "\n", "\t", ",", "(", ")", "[", "]", "{", "}"]
 
 
 
@@ -129,9 +129,16 @@ final class Parser {
 		self.text = text
 	}
 	
+	
 	func run() -> Parser {
-		var index = skipSeparators(from: text.startIndex)
+		var index = text.startIndex
+//		var index = skipSeparators(from:text.startIndex)
 		while index < text.endIndex {
+			index = skipSeparators(from: index)
+			if index >= text.endIndex {
+				return self
+			}
+//			tr.Info(self, info: "\(index.encodedOffset)")
 			let c = text[index]
 			
 			// omijamy komentarze komentarze
@@ -149,7 +156,7 @@ final class Parser {
 					else if cc == Asterisk {
 						if let token = parseCommentC(from: index) {
 							tokens.append(token)
-							index = text.index(index, offsetBy: token.pos.len + 1)
+							index = text.index(index, offsetBy: token.pos.len)
 							continue
 						}
 					}
@@ -160,7 +167,7 @@ final class Parser {
 			if c == Quotation {
 				if let token = parseString(from: index) {
 					tokens.append(token)
-					index = text.index(index, offsetBy: token.pos.len + 1)
+					index = text.index(index, offsetBy: token.pos.len)
 					continue
 				}
 			}
@@ -184,11 +191,12 @@ final class Parser {
 				}
 			}
 			
-			let token = parseOperation(from: index)
-			if token.type != .unknownType {
+			let (token, pos) = parseOperation(from: index)
+//			if token.type != .unknownType {
 				tokens.append(token)
-			}
-			index = text.index(index, offsetBy: token.pos.len + 1)
+//			}
+//			index = text.index(index, offsetBy: token.pos.len + 1)
+			index = pos
 		}
 		return self
 	}
@@ -200,7 +208,10 @@ extension Parser {
 	///
 	/// parseOperation
 	///
-	private func parseOperation(from idx: String.Index) -> Token {
+	private func parseOperation(from idx: String.Index) -> (Token, String.Index) {
+//		tr.In(self)
+//		defer { tr.Out(self) }
+		
 		var pos = idx
 		while pos < text.endIndex {
 			let c = text[pos]
@@ -215,24 +226,31 @@ extension Parser {
 				{
 					type = .operation
 				}
-				return Token(name: content, pos: Position(text, idx, pos), type: type)
+				let token = Token(name: content, pos: Position(text, idx, pos), type: type)
+//				tr.Info(self, info: "1. \(token)")
+				return (token, pos)
 			}
 			pos = text.index(after: pos)
 		}
-		return Token(name: "", pos: Position(text, idx, pos), type: .unknownType)
+		let token = Token(name: String(text[idx..<pos]), pos: Position(text, idx, pos), type: .unknownType)
+//		tr.Info(self, info: "2. \(token)")
+		return (token, pos)
 	}
 	
 	///
 	/// parseLiteral
 	///
 	private func parseLiteral(from idx: String.Index) -> ([Token], String.Index) {
+//		tr.In(self)
+//		defer { tr.Out(self) }
+
 		var indexes: [Index2] = []
 		var pos = idx
 		var startPos = pos
 		
 		while pos < text.endIndex {
 			let c = text[pos]
-			if isLiteralCharacter(c) {
+			if isLiteralCharacter(c) || isDigit(c) {
 				pos = text.index(after: pos)
 				continue
 			}
@@ -283,6 +301,9 @@ extension Parser {
 	/// parserNumber
 	///
 	private func parseNumber(from idx: String.Index) -> Token? {
+//		tr.In(self)
+//		defer { tr.Out(self) }
+
 		var pos = text.index(after: idx)
 		while pos < text.endIndex {
 			if !isNumberCharacter(text[pos]) {
@@ -299,6 +320,9 @@ extension Parser {
 	/// parseString
 	///
 	private func parseString(from idx: String.Index) -> Token? {
+//		tr.In(self)
+//		defer { tr.Out(self) }
+
 		var pos = text.index(after: idx)
 		while pos < text.endIndex {
 			if text[pos] == Quotation {
@@ -316,6 +340,13 @@ extension Parser {
 	///
 	private func parseCommentCpp(from idx: String.Index) -> Token? {
 		var pos = idx
+		
+//		tr.In(self)
+//		defer {
+//			print("\(pos.encodedOffset)")
+//			tr.Out(self)
+//		}
+		
 		while pos < text.endIndex {
 			if text[pos] == NewLine {
 				return Token(name: String(text[idx..<pos]), pos: Position(text, idx, pos), type: ItemType.commentCpp)
@@ -330,12 +361,19 @@ extension Parser {
 	///
 	private func parseCommentC(from idx: String.Index) -> Token? {
 		var pos = text.index(idx, offsetBy: 2)
+		
+//		tr.In(self)
+//		defer {
+//			print("\(pos.encodedOffset)")
+//			tr.Out(self)
+//		}
+
 		while pos < text.endIndex {
 			if text[pos] == Asterisk {
 				let nextPos = text.index(after: pos)
 				if nextPos < text.endIndex {
 					if text[nextPos] == Slash {
-						return Token(name: String(text[idx...nextPos]), pos: Position(text, idx, nextPos), type: ItemType.commentC)
+						return Token(name: String(text[idx...nextPos]), pos: Position(text, idx, text.index(after: nextPos)), type: ItemType.commentC)
 					}
 				}
 			}
@@ -345,6 +383,9 @@ extension Parser {
 	}
 	
 	private func skipSeparators(from idx: String.Index) -> String.Index {
+//		tr.In(self)
+//		defer { tr.Out(self) }
+
 		var pos = idx
 		while pos < text.endIndex {
 			if !isSeparator(c: text[pos]) {

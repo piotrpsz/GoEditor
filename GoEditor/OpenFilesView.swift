@@ -52,25 +52,25 @@ class OpenFilesView: NSView, TableViewDelegate, EventObserver {
 	
 	func registerObservers() {
 		registerEvent(Event.editorsContainerContentDidChange) { note in
-			tr.In(self)
-			defer { tr.Out(self) }
+//			tr.In(self)
+//			defer { tr.Out(self) }
+//			tr.Info(self, info: "event: \(Event.editorsContainerContentDidChange)")
 			
-			tr.Info(self, info: "event: \(Event.editorsContainerContentDidChange)")
 			self.tableView.reloadData()
 		}
 		
 		registerEvent(Event.editorStateDidChange) { note in
-			tr.In(self)
-			defer { tr.Out(self) }
-			tr.Info(self, info: "event: \(Event.editorStateDidChange)")
+//			tr.In(self)
+//			defer { tr.Out(self) }
+//			tr.Info(self, info: "event: \(Event.editorStateDidChange)")
 			
 			self.tableView.reloadData()
 		}
 		
 		registerEvent(Event.currentEditor) { note in
-			tr.In(self)
-			defer { tr.Out(self) }
-			tr.Info(self, info: "event: \(Event.currentEditor)")
+//			tr.In(self)
+//			defer { tr.Out(self) }
+//			tr.Info(self, info: "event: \(Event.currentEditor)")
 			
 			if let editor = note.userInfo?["editor"] as? TextEditor {
 				var index: Int?
