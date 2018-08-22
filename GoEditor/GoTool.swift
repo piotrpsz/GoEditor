@@ -8,10 +8,6 @@
 
 import Cocoa
 
-func after(_ delay: Double, closure: @escaping () -> ()) {
-    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
-}
-
 final class GoTool {
     static func fmt(fpath: String) -> (Int, String?) {
 		let task = Process()
@@ -32,10 +28,12 @@ final class GoTool {
 	
 	static func run(dir: String, files: [String]) -> String? {
 		let task = Process()
+		
 		var arguments = ["run"]
 		arguments.append(contentsOf: files)
-        
 		task.arguments = arguments
+		
+		task.environment = ["GOPATH":"/Users/piotr/Projects/Go"];
 		task.launchPath = "/usr/local/go/bin/go"
 		task.currentDirectoryPath = dir
 		
@@ -47,7 +45,20 @@ final class GoTool {
 		task.waitUntilExit()
 		
 		return output.fileHandleForReading.readDataToEndOfFile().string()
+	}
+	
+	static func installedPackages() {
+		let task = Process()
 		
+		task.launchPath = "/usr/local/go/bin/go"
+		task.arguments = ["list", "..."]
+		let output = Pipe()
+		task.standardOutput = output
+		task.launch()
+		task.waitUntilExit()
+		if let result = output.fileHandleForReading.readDataToEndOfFile().string() {
+			tr.Info(self, info: "Installed packages:\n\(result)")
+		}
 	}
 	
 }

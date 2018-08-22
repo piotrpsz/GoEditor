@@ -17,7 +17,11 @@ final class Shared {
             Event.mainPackageDirectoryDidChange.dispatch()
         }
     }
-	static var lastOpenedFileDirectory: String?
+	static var lastOpenedFileDirectory: String? {
+		didSet {
+			UserDefaults.standard.set(Shared.lastOpenedFileDirectory, forKey: "LastOpenedFileDirectory")
+		}
+	}
     
     
     static func environment() -> [String:String] {

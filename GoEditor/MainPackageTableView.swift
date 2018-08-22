@@ -68,7 +68,7 @@ final class MainPackageTableView: TableView, TableViewDelegate, EventObserver {
 				}
 			}
 			catch let error as NSError {
-				tr.info(self, "\(error.localizedDescription)")
+				tr.Info(self, info: "\(error.localizedDescription)")
 			}
 		}
 		self.reloadData()

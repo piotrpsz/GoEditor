@@ -12,7 +12,19 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 	static private let initialFileName = "Unknown.go"
 	static fileprivate let keyWords = "break|default|func|interface|select|case|defer|go|map|struct|chan|else|goto|package|switch|const|fallthrough|if|range|type|continue|for|import|return|var"
 	static fileprivate let keyWordsRegex = try! NSRegularExpression(pattern: "\\b(\(EditorView.keyWords))\\b", options: [])
-	static fileprivate let keyColor = NSColor(calibratedRed: 1.0, green: 0.2, blue: 0.3, alpha: 0.9)
+	
+	static private let colorKey        = NSColor(calibratedRed: 1.0, green: 0.2, blue: 0.3, alpha: 0.9)
+	static private let colorCommentC   = NSColor(calibratedWhite: 0.4, alpha: 0.9)
+	static private let colorCommentCpp = NSColor(calibratedWhite: 0.6, alpha: 0.9)
+	static private let colorString     = NSColor(calibratedRed: 1.0, green: 0.0, blue: 0.0, alpha: 0.9)
+	static private let colorInt        = NSColor(calibratedRed: 0.6, green: 1.0, blue: 0.2, alpha: 0.9)
+	static private let colorFloat      = NSColor(calibratedRed: 0.2, green: 1.0, blue: 0.6, alpha: 0.9)
+	static private let colorOfOperation = NSColor(calibratedRed: 0.6, green: 0.6, blue: 0.0, alpha: 0.9)
+	static private let colorOfType      = NSColor(calibratedRed: 0.0, green: 0.6, blue: 0.6, alpha: 0.9)
+
+	static private let colorOfObjectName   = NSColor(calibratedRed: 0.7, green: 0.4, blue: 0.7, alpha: 0.9)
+	static private let colorOfObjectMember = NSColor(calibratedRed: 0.8, green: 0.8, blue: 0.3, alpha: 0.9)
+
 	
 	private var currentFontColor = NSColor.white
 	fileprivate var editOperation: EditOperation?
@@ -34,7 +46,7 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 	}
 	
 	var isEmpty: Bool {
-		if let count = textStorage?.string.characters.count {
+		if let count = textStorage?.string.count {
 			return (count == 0)
 		}
 		return true
@@ -75,7 +87,7 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
         }
         // ustawienie koloru tekstu i fontu musi być po(!) dodaniu tekstu
         textColor = currentFontColor
-        font = NSFont.systemFont(ofSize: 12.0)
+        font = NSFont.monospacedDigitSystemFont(ofSize: 12.0, weight: .medium)
         
         self.textStorage?.delegate = self
         updateGeometry()
@@ -92,7 +104,7 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 	
 	func openFile(fpath: String) {
 		guard let string = try? String(contentsOfFile: fpath) else {
-			tr.info(self, "Can't read the file (\(fpath).")
+			tr.Info(self, info: "Can't read the file (\(fpath).")
 			return
 		}
         setNewContent(string: string)
@@ -167,36 +179,69 @@ final class EditorView: NSTextView, NSTextStorageDelegate {
 //	}
 	
 	private func coloredSyntax(_ textStorage: NSTextStorage) {
-		let string = textStorage.string
+		let text = textStorage.string
 		
 		self.localEditing = true
 		textStorage.beginEditing()
-		textStorage.addAttributes([NSAttributedStringKey.foregroundColor:self.currentFontColor], range: NSMakeRange(0, string.characters.count))
-		let matches = EditorView.keyWordsRegex.matches(in: string, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, string.characters.count))
-		for match in matches {
-			textStorage.addAttributes([NSAttributedStringKey.foregroundColor:EditorView.keyColor], range: match.range)
+		textStorage.addAttributes([NSAttributedStringKey.foregroundColor:self.currentFontColor], range: NSMakeRange(0, text.count))
+
+		let foundedTokens = Parser(text: text).run().tokens
+		for token in foundedTokens {
+			let range = token.pos.range()
+			switch token.type {
+			case .keyword:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorKey], range: range)
+			case .commentC:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorCommentC], range: range)
+			case .commentCpp:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorCommentCpp], range: range)
+			case .stringValue:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorString], range: range)
+			case .intValue:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorInt], range: range)
+			case .floatValue:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorFloat], range: range)
+			case .operation:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorOfOperation], range: range)
+			case .basicType:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorOfType], range: range)
+			case .objectName:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorOfObjectName], range: range)
+			case .objectMember:
+				textStorage.addAttributes([NSAttributedStringKey.foregroundColor: EditorView.colorOfObjectMember], range: range)
+			default:
+				()
+			}
 		}
+		
+		
+//		let matches = EditorView.keyWordsRegex.matches(in: string, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, string.count))
+//		for match in matches {
+//			textStorage.addAttributes([NSAttributedStringKey.foregroundColor:EditorView.keyColor], range: match.range)
+//		}
 		textStorage.endEditing()
 		self.localEditing = false
 	}
 	
 	// MARK: - NSTextStorageDelegate
+	func textStorage(_ textStorage: NSTextStorage, willProcessEditing editedMask: NSTextStorageEditActions, range editedRange: NSRange, changeInLength delta: Int) {
+	}
 	
 	func textStorage(_ textStorage: NSTextStorage, didProcessEditing editedMask: NSTextStorageEditActions, range editedRange: NSRange, changeInLength delta: Int) {
 		guard !localEditing else {
 			return
 		}
 		
-		self.coloredSyntax(textStorage)
 		editOperation = nil
-		
-		if delta != -1 {
+		if delta == 1 {
 			let changedText = textStorage.attributedSubstring(from: editedRange).string
 			if changedText == "{" {
 				editOperation = EditOperation(char: "{", range: editedRange)
-			} else if changedText == "(" {
+			}
+			else if changedText == "(" {
 				editOperation = EditOperation(char: "(", range: editedRange)
-			} else if changedText == "\n" {
+			}
+			else if changedText == "\n" {
 				editOperation = EditOperation(char: "\n", range: editedRange)
 			}
 		}
@@ -249,7 +294,7 @@ extension EditorView: NSTextViewDelegate {
 		textStorage.replaceCharacters(in: NSMakeRange(0, textStorage.characters.count), with: text)
 		textStorage.endEditing()
 		
-		currentCursorPosition += 1 + prefixPlusIntendation.characters.count
+		currentCursorPosition += 1 + prefixPlusIntendation.count
 		setSelectedRange(NSMakeRange(currentCursorPosition, 0))
 	}
 	

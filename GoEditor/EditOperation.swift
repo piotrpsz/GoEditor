@@ -12,3 +12,13 @@ struct EditOperation {
 	let char: Character
 	let range: NSRange
 }
+
+enum TokenType {
+	case keyword, variable, package, member, method
+	case string, number, bool
+}
+
+struct TokenInfo {
+	let type: TokenType
+	let range: Range<String.Index>
+}
